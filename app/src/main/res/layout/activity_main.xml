@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activities.MainActivity">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="150dp">
+
+            <Spinner
+                android:id="@+id/spinnerListsGoals"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toStartOf="@+id/fabEditGoalBtnMain"
+                android:layout_marginEnd="16dp"
+                android:layout_centerInParent="true" />
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/fabEditGoalBtnMain"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="32dp"
+                android:layout_alignParentEnd="true"
+                android:layout_centerInParent="true"
+                android:clickable="true"
+                android:focusable="true"
+                android:onClick="editGoalsFab"
+                android:src="@drawable/ic_edit_pencil"
+                android:backgroundTint="@android:color/holo_orange_dark" />
+        </RelativeLayout>
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardChosenGoal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        app:layout_constraintBottom_toTopOf="@+id/playRandomImgBtn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cardView">
+
+        <RelativeLayout
+            android:id="@+id/relativeChosenGoal"
+            android:visibility="invisible"
+            android:layout_width="150dp"
+            android:layout_height="150dp">
+
+            <ImageView
+                android:id="@+id/iconChosenGoalImg"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_alignParentTop="true"
+                android:layout_centerInParent="true"
+                android:contentDescription="@string/desc_icon_chosen_goal"
+                android:src="@drawable/ic_purpose" />
+
+            <TextView
+                android:id="@+id/nameChosenGoalTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:textSize="20sp"
+                android:layout_below="@+id/iconChosenGoalImg"
+                android:layout_centerInParent="true" />
+        </RelativeLayout>
+
+        <ImageView
+            android:id="@+id/startedRandomGoalImg"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:src="@drawable/ic_brainstorm"
+            android:contentDescription="@string/desc_started_random_image" />
+    </androidx.cardview.widget.CardView>
+
+    <ImageView
+        android:id="@+id/playRandomImgBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="32dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:onClick="getRandomGoal"
+        android:contentDescription="@string/start_random"
+        android:src="@drawable/ic_purpose_main"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

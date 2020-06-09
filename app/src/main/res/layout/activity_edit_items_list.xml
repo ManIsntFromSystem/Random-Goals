@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/rootLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activities.EditItemsListActivity">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/editCardView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="0dp"
+        app:cardElevation="20dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:orientation="vertical">
+
+            <EditText
+                android:id="@+id/nameListGoals"
+                android:layout_width="180dp"
+                android:layout_height="wrap_content"
+                android:autofillHints="@string/hint_list_name"
+                android:hint="@string/hint_list_name"
+                android:inputType="text" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/nameNewItemEditText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerInParent="true"
+                    android:layout_marginEnd="48dp"
+                    android:layout_toStartOf="@+id/iconNewItemImageView"
+                    android:autofillHints="@string/hint_item_list_name"
+                    android:hint="@string/hint_item_list_name"
+                    android:inputType="text" />
+
+                <ImageView
+                    android:id="@+id/iconNewItemImageView"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_centerInParent="true"
+                    android:layout_marginEnd="16dp"
+                    android:layout_toStartOf="@+id/addNewItemToListImgBtn"
+                    android:contentDescription="@string/desc_icon_new_item_goal"
+                    android:src="@drawable/ic_purpose"
+                    android:tag="ic_purpose"/>
+
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/addNewItemToListImgBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerInParent="true"
+                    android:layout_margin="3dp"
+                    android:elevation="6dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:onClick="addNewItemToMap"
+                    android:backgroundTint="@android:color/holo_blue_light"
+                    app:fabSize="normal"
+                    app:borderWidth="0dp"
+                    app:srcCompat="@drawable/add_6" />
+            </RelativeLayout>
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewEditGoals"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/editCardView"
+        android:layout_alignBottom="@+id/editCardView"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="8dp" />
+</RelativeLayout>

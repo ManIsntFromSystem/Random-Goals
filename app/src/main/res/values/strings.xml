@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">RandomGoals</string>
+    <string name="btn_goals_edit_main">Edit Goals</string>
+    <string name="to_add_new_goal">Add new Goal</string>
+    <string name="image_edit_desc">Image</string>
+    <string name="edit_item_goal">EditItemGoal</string>
+    <string name="start_random">Start Random</string>
+    <string name="hint_list_name">List name:</string>
+    <string name="hint_item_list_name">Item list name:</string>
+    <string name="desc_add_new_item_to_list">add new item to list</string>
+    <string name="desc_icon_new_item_goal">Icon new item goal</string>
+    <string name="desc_edit_for_lists_goals">Edit for lists goals</string>
+    <string name="desc_icon_chosen_goal">Icon choosed goal</string>
+    <string name="desc_started_random_image">Started random image</string>
+    <string name="save_list_goals_item_menu">Save list goals</string>
+    <string name="delete_item_goal">delete item goal</string>
+</resources>
