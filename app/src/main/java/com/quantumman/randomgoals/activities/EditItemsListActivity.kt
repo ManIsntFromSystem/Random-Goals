@@ -52,7 +52,7 @@ class EditItemsListActivity : AppCompatActivity() {
         intentListName = intent.getStringExtra("list_name")
         if (intentListName != null) {
             nameListGoals.text = intentListName!!.toEditable()
-            allListGoals = GoalDBOpenHelper(this).getGoalsByListName(intentListName!!)
+            allListGoals = GoalDBOpenHelper(this).queryGoals(intentListName)
             getGoals()
         } else allListGoals = listOf()
     }
@@ -88,7 +88,7 @@ class EditItemsListActivity : AppCompatActivity() {
 
     private fun saveListGoalToDB() {
         val listAllNamesLists = GoalDBOpenHelper(this)
-            .getGoalsByListName(null).toSet().map { it.nameListGoals }
+            .queryGoals(null).toSet().map { it.nameListGoals }
         val inputListName = nameListGoals.text.toString()
         val nameListGoals = inputListName
 //            if (listAllNamesLists.contains(inputListName)) inputListName // add tailrec fun for check

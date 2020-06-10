@@ -12,7 +12,7 @@ import com.quantumman.randomgoals.data.GoalsContract.MemberEntry.CONTENT_SINGLE_
 import com.quantumman.randomgoals.data.GoalsContract.MemberEntry.TABLE_NAME
 import com.quantumman.randomgoals.data.GoalsContract.MemberEntry._ID
 
-class GoalsContentProvider(): ContentProvider() {
+class GoalsContentProvider() : ContentProvider() {
     private lateinit var goalsDBHelper: GoalDBOpenHelper
 
     companion object {
@@ -35,6 +35,7 @@ class GoalsContentProvider(): ContentProvider() {
 
     override fun onCreate(): Boolean {
         Log.d("MyLog", "OnCreate Content")
+        println("OnCreate Content")
         goalsDBHelper = GoalDBOpenHelper(context)
         return true
     }
@@ -89,12 +90,15 @@ class GoalsContentProvider(): ContentProvider() {
         }
     }
 
+    /*       goalsDbHelper dont get context, and when get, at the moment all is crashing with NPE*/
     override fun delete(uri: Uri, mSelection: String?, mSelectionArgs: Array<String>?): Int {
-        val db: SQLiteDatabase = GoalDBOpenHelper(context).writableDatabase
+        val db: SQLiteDatabase =
+            if (this::goalsDBHelper.isInitialized) goalsDBHelper.writableDatabase
+            else GoalDBOpenHelper(context).writableDatabase
         val rowsDeleted = when (uriMatcher.match(uri)) {
             MATCHER_WHOLE_TABLE -> db.delete(TABLE_NAME, mSelection, mSelectionArgs)
             MATCHER_GOAL -> {
-                if (mSelection != null && mSelectionArgs != null){
+                if (mSelection != null && mSelectionArgs != null) {
                     db.delete(TABLE_NAME, mSelection, mSelectionArgs)
                 } else {
                     val selection = "$_ID=?"

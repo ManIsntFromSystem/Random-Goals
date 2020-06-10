@@ -34,7 +34,7 @@ class ListGoalsActivity : AppCompatActivity(), GoalsListAdapter.OnGoalListener {
         addNewGoalFltActBtn = findViewById(R.id.addNewGoalFltActBtn)
         recyclerViewEditGoals = findViewById(R.id.recyclerViewListGoals)
         goalsContent = GoalsContentProvider()
-        listAllGoals = GoalDBOpenHelper(this).getAllItemsListGoals()
+        listAllGoals = GoalDBOpenHelper(this).queryGoals(null)
         listNamesGoals = listAllGoals.map { it.nameListGoals }.distinct()
     }
 
@@ -78,7 +78,7 @@ class ListGoalsActivity : AppCompatActivity(), GoalsListAdapter.OnGoalListener {
                     .filter { it.nameListGoals == listNamesGoals[viewHolder.adapterPosition] }
                     .map { it.id })
 
-                val rowsDeleted = goalsContent.delete(
+                val rowsDeleted = GoalDBOpenHelper(this@ListGoalsActivity).delListGoalsByListName(
                     CONTENT_URI,
                     "$COLUMN_NAME_LIST=?",
                     arrayOf(listNamesGoals[viewHolder.adapterPosition])

@@ -52,7 +52,7 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
 
     private fun updateListInitialListsForSpinner() {
         if (initialGoalsLists.isNotEmpty()) initialGoalsLists.clear()
-        initialGoalsLists.addAll(GoalDBOpenHelper(this).getAllItemsListGoals()
+        initialGoalsLists.addAll(GoalDBOpenHelper(this).queryGoals(null)
             .map { it.nameListGoals }
             .distinct()
             .toList())
@@ -71,7 +71,7 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
         relativeChosenGoal.visibility = View.INVISIBLE
         startedRandomGoalImg.visibility = View.VISIBLE
         if (mapGoalsForRandom.isNotEmpty()) mapGoalsForRandom.clear()
-        selectedGoalsList = GoalDBOpenHelper(this).getGoalsByListName(initialGoalsLists[position])
+        selectedGoalsList = GoalDBOpenHelper(this).queryGoals(initialGoalsLists[position])
         for (i in selectedGoalsList.indices)
             mapGoalsForRandom[selectedGoalsList[i].nameGoal] = selectedGoalsList[i].iconGoal
     }
