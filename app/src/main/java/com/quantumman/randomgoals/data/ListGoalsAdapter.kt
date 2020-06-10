@@ -33,7 +33,7 @@ class ListGoalsAdapter(private val context: Context, private val goals: List<Goa
         holder.iconGoalImageView.setImageResource(imageResource)
     }
 
-    class GoalViewHolder(itemView: View) : ViewHolder(itemView) {
+    inner class GoalViewHolder(itemView: View) : ViewHolder(itemView) {
         var iconGoalImageView: ImageView = itemView.findViewById(R.id.goalEditImageView)
         var nameItemGoalTxt: TextView = itemView.findViewById(R.id.nameItemGoalTxt)
     }

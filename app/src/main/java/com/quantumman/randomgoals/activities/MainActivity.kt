@@ -3,11 +3,10 @@ package com.quantumman.randomgoals.activities
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.*
-import com.google.android.material.snackbar.Snackbar
 import com.quantumman.randomgoals.R
+import com.quantumman.randomgoals.data.GoalDBOpenHelper
 import com.quantumman.randomgoals.data.GoalsContentProvider
 import com.quantumman.randomgoals.model.Goal
 
@@ -44,24 +43,19 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
         createSpinner()
     }
 
-    override fun onResume() {
-        super.onResume()
-        updateListInitialListsForSpinner()
-        createSpinner()
-    }
-
     private fun createSpinner() =
-        ArrayAdapter(this, android.R.layout.simple_spinner_item, initialGoalsLists.toSet().toList())
+        ArrayAdapter(this, android.R.layout.simple_spinner_item, initialGoalsLists)
             .also { adapter ->
                 adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
                 spinnerListsGoals.adapter = adapter
             }
 
     private fun updateListInitialListsForSpinner() {
-        initialGoalsLists.clear()
-        content.getAllItemsListGoals(this).forEach {
-            initialGoalsLists.add(it.nameListGoals)
-        }
+        if (initialGoalsLists.isNotEmpty()) initialGoalsLists.clear()
+        initialGoalsLists.addAll(GoalDBOpenHelper(this).getAllItemsListGoals()
+            .map { it.nameListGoals }
+            .distinct()
+            .toList())
     }
 
     fun editGoalsFab(view: View) {
@@ -76,8 +70,8 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
         relativeChosenGoal.visibility = View.INVISIBLE
         startedRandomGoalImg.visibility = View.VISIBLE
-        mapGoalsForRandom.clear()
-        selectedGoalsList = content.getGoalsByListName(this, initialGoalsLists[position])
+        if (mapGoalsForRandom.isNotEmpty()) mapGoalsForRandom.clear()
+        selectedGoalsList = GoalDBOpenHelper(this).getGoalsByListName(initialGoalsLists[position])
         for (i in selectedGoalsList.indices)
             mapGoalsForRandom[selectedGoalsList[i].nameGoal] = selectedGoalsList[i].iconGoal
     }
@@ -90,5 +84,9 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
         nameChosenGoalTextView.text = randomGoal
         startedRandomGoalImg.visibility = View.INVISIBLE
         relativeChosenGoal.visibility = View.VISIBLE
+    }
+
+    companion object{
+        private const val MY_TAG = "MyLog"
     }
 }

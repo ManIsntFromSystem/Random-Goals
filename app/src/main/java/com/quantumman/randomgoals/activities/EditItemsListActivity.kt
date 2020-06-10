@@ -1,6 +1,5 @@
 package com.quantumman.randomgoals.activities
 
-import android.content.ContentProvider
 import android.content.ContentValues
 import android.os.Bundle
 import android.text.Editable
@@ -18,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import com.quantumman.randomgoals.R
+import com.quantumman.randomgoals.data.GoalDBOpenHelper
 import com.quantumman.randomgoals.data.GoalsContentProvider
 import com.quantumman.randomgoals.data.GoalsContract.MemberEntry.COLUMN_NAME_LIST
 import com.quantumman.randomgoals.data.GoalsContract.MemberEntry.COLUMN_NAME_ITEM_GOAL
@@ -52,7 +52,7 @@ class EditItemsListActivity : AppCompatActivity() {
         intentListName = intent.getStringExtra("list_name")
         if (intentListName != null) {
             nameListGoals.text = intentListName!!.toEditable()
-            allListGoals = goalContentProvider.getGoalsByListName(this, intentListName!!)
+            allListGoals = GoalDBOpenHelper(this).getGoalsByListName(intentListName!!)
             getGoals()
         } else allListGoals = listOf()
     }
@@ -87,8 +87,8 @@ class EditItemsListActivity : AppCompatActivity() {
 
 
     private fun saveListGoalToDB() {
-        val listAllNamesLists = goalContentProvider
-            .getGoalsByListName(this, null).toSet().map { it.nameListGoals }
+        val listAllNamesLists = GoalDBOpenHelper(this)
+            .getGoalsByListName(null).toSet().map { it.nameListGoals }
         val inputListName = nameListGoals.text.toString()
         val nameListGoals = inputListName
 //            if (listAllNamesLists.contains(inputListName)) inputListName // add tailrec fun for check

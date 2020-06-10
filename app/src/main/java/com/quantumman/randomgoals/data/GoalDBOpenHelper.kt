@@ -17,6 +17,7 @@ import java.util.jar.Attributes
 
 class GoalDBOpenHelper internal constructor(context: Context?) :
     SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
+    val mContext = context
     override fun onCreate(db: SQLiteDatabase) {
         db.execSQL(SQL_CREATE_TABLE)
     }
@@ -30,51 +31,62 @@ class GoalDBOpenHelper internal constructor(context: Context?) :
         onUpgrade(db, oldVersion, newVersion)
     }
 
-    companion object {
-        private const val SQL_CREATE_TABLE = ("CREATE TABLE $TABLE_NAME ($_ID INTEGER PRIMARY KEY, " +
-                "$COLUMN_NAME_LIST TEXT, $COLUMN_NAME_ITEM_GOAL TEXT, $COLUMN_NAME_ICON_GOAL TEXT)")
-        private const val SQL_DELETE_ENTRIES = "DROP TABLE IF EXISTS $TABLE_NAME"
-    }
-}
-    /*
-    @Throws(SQLiteConstraintException::class)
-    fun addGoal(name: Goal) {
-        val values = ContentValues()
-        values.put(COLUMN_NAME_ITEM_GOAL, name.nameGoal)
-        values.put(COLUMN_NAME_ICON_GOAL, name.iconGoal)
-        values.put(COLUMN_NAME_LIST, name.nameList)
-        val db = this.writableDatabase
-        db.insert(TABLE_NAME, null, values)
-        db.close()
+    @SuppressLint("Recycle")
+    fun getAllItemsListGoals(): List<Goal> {
+        val itemsGoalList: MutableList<Goal> = mutableListOf()
+        val selectQuery = "SELECT * FROM $TABLE_NAME"
+        val db: SQLiteDatabase = writableDatabase
+        val cursor = db.rawQuery(selectQuery, null)
+
+        while (cursor.moveToNext()) {
+            val indexId = cursor.getColumnIndex(_ID)
+            val indexList = cursor.getColumnIndex(COLUMN_NAME_LIST)
+            val indexGoal = cursor.getColumnIndex(COLUMN_NAME_ITEM_GOAL)
+            val indexIcon = cursor.getColumnIndex(COLUMN_NAME_ICON_GOAL)
+            val gid = cursor.getInt(indexId)
+            val list = cursor.getString(indexList)
+            val name = cursor.getString(indexGoal)
+            val icon = cursor.getString(indexIcon)
+            val goal = Goal(gid, list, name, icon)
+            itemsGoalList.add(goal)
+        }
+        return itemsGoalList.toList()
     }
 
     @SuppressLint("Recycle")
-    fun getAllName(): ArrayList<Goal> {
-        val goals = ArrayList<Goal>()
-        val db = readableDatabase
-        var cursor: Cursor? = null
-        try {
-            cursor = db.rawQuery("select * from ${GoalsContract.MemberEntry.TABLE_NAME}", null)
-        } catch (e: SQLiteException) {
-            db.execSQL(SQL_CREATE_TABLE)
-            return ArrayList()
+    fun getGoalsByListName(nameList: String?): List<Goal> {
+        val itemsGoalList: MutableList<Goal> = mutableListOf()
+        val selectQuery = when {
+            nameList != null -> "SELECT * FROM $TABLE_NAME WHERE $COLUMN_NAME_LIST = ?"
+            else -> "SELECT * FROM $TABLE_NAME"
         }
-
-        var goalId: String
-        var nameList: String
-        var nameGoal: String
-        var iconGoal: String
-        if (cursor!!.moveToFirst()) {
-            while (!cursor.isAfterLast) {
-                goalId = cursor.getString(cursor.getColumnIndex(GoalsContract.MemberEntry._ID))
-                nameList = cursor.getString(cursor.getColumnIndex(GoalsContract.MemberEntry.COLUMN_NAME_LIST))
-                nameGoal = cursor.getString(cursor.getColumnIndex(GoalsContract.MemberEntry.COLUMN_NAME_ITEM_GOAL))
-                iconGoal = cursor.getString(cursor.getColumnIndex(GoalsContract.MemberEntry.COLUMN_NAME_ICON_GOAL))
-
-                goals.add(Goal(goalId.toInt(), nameGoal, iconGoal, nameList))
-                cursor.moveToNext()
-            }
+        val selectionArgs = when {
+            nameList != null -> arrayOf(nameList)
+            else -> null
         }
-        return goals
+        val db = writableDatabase
+        val cursor = db.rawQuery(selectQuery, selectionArgs)
+        while (cursor.moveToNext()) {
+            val indexId = cursor.getColumnIndex(_ID)
+            val indexList = cursor.getColumnIndex(COLUMN_NAME_LIST)
+            val indexGoal = cursor.getColumnIndex(COLUMN_NAME_ITEM_GOAL)
+            val indexIcon = cursor.getColumnIndex(COLUMN_NAME_ICON_GOAL)
+            val gid = cursor.getInt(indexId)
+            val list = cursor.getString(indexList)
+            val name = cursor.getString(indexGoal)
+            val icon = cursor.getString(indexIcon)
+            val goal = Goal(gid, list, name, icon)
+            itemsGoalList.add(goal)
+        }
+        return itemsGoalList.toList()
     }
-*/
+
+    companion object {
+        private const val SQL_CREATE_TABLE = ("CREATE TABLE $TABLE_NAME (" +
+                "$_ID INTEGER PRIMARY KEY, " +
+                "$COLUMN_NAME_LIST TEXT, " +
+                "$COLUMN_NAME_ITEM_GOAL TEXT, " +
+                "$COLUMN_NAME_ICON_GOAL TEXT)")
+        private const val SQL_DELETE_ENTRIES = "DROP TABLE IF EXISTS $TABLE_NAME"
+    }
+}
