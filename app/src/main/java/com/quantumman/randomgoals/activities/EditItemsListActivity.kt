@@ -113,6 +113,7 @@ class EditItemsListActivity : AppCompatActivity() {
                 else Log.d("MyLog", "Insertion of data is successful")
             }
         }
+        finish()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

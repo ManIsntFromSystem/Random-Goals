@@ -24,8 +24,10 @@ class ListGoalsActivity : AppCompatActivity(), GoalsListAdapter.OnGoalListener {
     private lateinit var recyclerViewEditGoals: RecyclerView
     private lateinit var addNewGoalFltActBtn: FloatingActionButton
     private lateinit var goalsContent: GoalsContentProvider
+    private lateinit var goalsDBHelper: GoalDBOpenHelper
     private lateinit var listNamesGoals: List<String>
     private lateinit var listAllGoals: List<Goal>
+    private var point: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,8 +36,9 @@ class ListGoalsActivity : AppCompatActivity(), GoalsListAdapter.OnGoalListener {
         addNewGoalFltActBtn = findViewById(R.id.addNewGoalFltActBtn)
         recyclerViewEditGoals = findViewById(R.id.recyclerViewListGoals)
         goalsContent = GoalsContentProvider()
-        listAllGoals = GoalDBOpenHelper(this).queryGoals(null)
-        listNamesGoals = listAllGoals.map { it.nameListGoals }.distinct()
+        goalsDBHelper = GoalDBOpenHelper(this)
+        initLists()
+        initRecycler()
     }
 
     fun addNewListGoalsFloatBtn(view: View) {
@@ -43,10 +46,23 @@ class ListGoalsActivity : AppCompatActivity(), GoalsListAdapter.OnGoalListener {
         startActivity(intent)
     }
 
+    private fun initLists() {
+        if (this::listAllGoals.isInitialized && this::listNamesGoals.isInitialized &&
+            listAllGoals.isNotEmpty() && listNamesGoals.isNotEmpty()) {
+            listNamesGoals.toMutableList().clear()
+            listAllGoals.toMutableList().clear()
+        }
+        listAllGoals = goalsDBHelper.queryGoals(null)
+        listNamesGoals = listAllGoals.map { it.nameListGoals }.distinct().toMutableList()
+    }
+
     override fun onResume() {
         super.onResume()
-        initRecycler()
-        Log.d("MyLog", "On Resume")
+        if (point > 0) {
+            initLists()
+            initRecycler()
+        }
+        point++
     }
 
     private fun initRecycler() { //add delete button and its Listener
@@ -63,7 +79,6 @@ class ListGoalsActivity : AppCompatActivity(), GoalsListAdapter.OnGoalListener {
 
     private var itemTouchHelperCallback: ItemTouchHelper.SimpleCallback =
         object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
-
             override fun onMove(
                 recyclerView: RecyclerView,
                 viewHolder: RecyclerView.ViewHolder,
@@ -73,37 +88,26 @@ class ListGoalsActivity : AppCompatActivity(), GoalsListAdapter.OnGoalListener {
             }
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                val listIdForDel = mutableListOf<Int>()
-                listIdForDel.addAll(listAllGoals
-                    .filter { it.nameListGoals == listNamesGoals[viewHolder.adapterPosition] }
-                    .map { it.id })
-
-                val rowsDeleted = GoalDBOpenHelper(this@ListGoalsActivity).delListGoalsByListName(
-                    CONTENT_URI,
-                    "$COLUMN_NAME_LIST=?",
-                    arrayOf(listNamesGoals[viewHolder.adapterPosition])
-                )
-
-                if (rowsDeleted == 0)
-                    Snackbar.make(activity_list_goals, "Del not successful", Snackbar.LENGTH_LONG)
-                        .show()
-                else
-                    Snackbar.make(activity_list_goals, "Del successful", Snackbar.LENGTH_LONG)
-                        .show()
+                deleteGoal(listNamesGoals[viewHolder.adapterPosition])
+                initLists()
+                initRecycler()
             }
         }
 
-    private fun deleteGoal(currentProductUri: Uri) {
-
+    private fun deleteGoal(listName: String) {
+        val rowsDeleted = goalsDBHelper
+            .delListGoalsByListName(CONTENT_URI, "$COLUMN_NAME_LIST=?", arrayOf(listName))
+        if (rowsDeleted == 0)
+            Snackbar.make(activity_list_goals, "Del not successful", Snackbar.LENGTH_LONG)
+                .show()
+        else
+            Snackbar.make(activity_list_goals, "Del successful", Snackbar.LENGTH_LONG)
+                .show()
     }
 
     override fun onGoalClick(position: Int) {
         val intent = Intent(this, EditItemsListActivity::class.java)
         intent.putExtra("list_name", listNamesGoals[position])
         startActivity(intent)
-//        val uri: Uri =  ContentUris.withAppendedId(CONTENT_URI, position.toLong())
-//        deleteGoal(uri)
     }
-
-
 }

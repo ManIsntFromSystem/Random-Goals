@@ -19,10 +19,12 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
     private lateinit var nameChosenGoalTextView: TextView
     private lateinit var relativeChosenGoal: RelativeLayout
     private lateinit var spinnerListsGoals: Spinner
-    private lateinit var initialGoalsLists: MutableList<String>
+    private lateinit var initialGoalsLists: List<String>
     private lateinit var selectedGoalsList: List<Goal>
     private lateinit var content: GoalsContentProvider
+    private lateinit var goalsDBHelper: GoalDBOpenHelper
     private lateinit var mapGoalsForRandom: MutableMap<String, String>
+    private var point: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,9 +39,9 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
         spinnerListsGoals = findViewById(R.id.spinnerListsGoals)
         spinnerListsGoals.onItemSelectedListener = this
         content = GoalsContentProvider()
+        goalsDBHelper = GoalDBOpenHelper(this)
         mapGoalsForRandom = mutableMapOf()
-        initialGoalsLists = mutableListOf()
-        updateListInitialListsForSpinner()
+        initLists()
         createSpinner()
     }
 
@@ -50,12 +52,25 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
                 spinnerListsGoals.adapter = adapter
             }
 
-    private fun updateListInitialListsForSpinner() {
-        if (initialGoalsLists.isNotEmpty()) initialGoalsLists.clear()
-        initialGoalsLists.addAll(GoalDBOpenHelper(this).queryGoals(null)
+    private fun initLists() {
+        if (this::initialGoalsLists.isInitialized && initialGoalsLists.isNotEmpty()){
+            initialGoalsLists.toMutableList().clear()
+        }
+        initialGoalsLists = GoalDBOpenHelper(this).queryGoals(null)
             .map { it.nameListGoals }
             .distinct()
-            .toList())
+            .toList()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        println("OnResume Init")
+        if (point > 0) {
+            initLists()
+            createSpinner()
+            println("OnResume Init")
+        }
+        point++
     }
 
     fun editGoalsFab(view: View) {
