@@ -98,11 +98,9 @@ class ListGoalsActivity : AppCompatActivity(), GoalsListAdapter.OnGoalListener {
         val rowsDeleted = goalsDBHelper
             .delListGoalsByListName(CONTENT_URI, "$COLUMN_NAME_LIST=?", arrayOf(listName))
         if (rowsDeleted == 0)
-            Snackbar.make(activity_list_goals, "Del not successful", Snackbar.LENGTH_LONG)
-                .show()
+            Snackbar.make(act_list_goals, "Del not successful", Snackbar.LENGTH_LONG).show()
         else
-            Snackbar.make(activity_list_goals, "Del successful", Snackbar.LENGTH_LONG)
-                .show()
+            Snackbar.make(act_list_goals, "Del successful", Snackbar.LENGTH_LONG).show()
     }
 
     override fun onGoalClick(position: Int) {

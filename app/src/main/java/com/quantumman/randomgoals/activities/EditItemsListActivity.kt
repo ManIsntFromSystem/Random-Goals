@@ -19,24 +19,26 @@ import com.google.android.material.snackbar.Snackbar
 import com.quantumman.randomgoals.R
 import com.quantumman.randomgoals.data.GoalDBOpenHelper
 import com.quantumman.randomgoals.data.GoalsContentProvider
-import com.quantumman.randomgoals.data.GoalsContract.MemberEntry.COLUMN_NAME_LIST
-import com.quantumman.randomgoals.data.GoalsContract.MemberEntry.COLUMN_NAME_ITEM_GOAL
 import com.quantumman.randomgoals.data.GoalsContract.MemberEntry.COLUMN_NAME_ICON_GOAL
+import com.quantumman.randomgoals.data.GoalsContract.MemberEntry.COLUMN_NAME_ITEM_GOAL
+import com.quantumman.randomgoals.data.GoalsContract.MemberEntry.COLUMN_NAME_LIST
 import com.quantumman.randomgoals.data.GoalsContract.MemberEntry.CONTENT_URI
 import com.quantumman.randomgoals.data.ItemsGoalAdapters
+import com.quantumman.randomgoals.data.RecyclerItemClickListener
 import com.quantumman.randomgoals.model.Goal
 import kotlinx.android.synthetic.main.activity_edit_items_list.*
 
-class EditItemsListActivity : AppCompatActivity() {
 
+class EditItemsListActivity : AppCompatActivity() {
     private lateinit var nameListGoals: EditText
     private lateinit var nameNewItemEditText: EditText
     private lateinit var iconNewItemImageView: ImageView
     private lateinit var addNewItemToListImgBtn: FloatingActionButton
     private lateinit var recyclerViewEditGoals: RecyclerView
     private lateinit var goalContentProvider: GoalsContentProvider
+    private lateinit var goalsDBHelper: GoalDBOpenHelper
     private lateinit var allListGoals: List<Goal>
-    private var intentListName: String? = null
+    private var currentListName: String? = null
     private val itemsGoalMap = mutableMapOf<String, String>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -49,53 +51,69 @@ class EditItemsListActivity : AppCompatActivity() {
         addNewItemToListImgBtn = findViewById(R.id.addNewItemToListImgBtn)
         recyclerViewEditGoals = findViewById(R.id.recyclerViewEditGoals)
         goalContentProvider = GoalsContentProvider()
-        intentListName = intent.getStringExtra("list_name")
-        if (intentListName != null) {
-            nameListGoals.text = intentListName!!.toEditable()
-            allListGoals = GoalDBOpenHelper(this).queryGoals(intentListName)
-            getGoals()
-        } else allListGoals = listOf()
-    }
-
-    private fun getGoals(list: List<Goal> = listOf()) {
-        val listGoals: MutableList<Goal> = mutableListOf()
-        when {
-            list.isEmpty() -> listGoals.addAll(allListGoals)
+        goalsDBHelper = GoalDBOpenHelper(this)
+        currentListName = intent.getStringExtra("list_name")
+        when (currentListName) {
+            null -> allListGoals = listOf()
             else -> {
-                listGoals.addAll(allListGoals)
-                listGoals.addAll(list)
+                nameListGoals.text = currentListName!!.toEditable()
+                initAllGoalsByName()
             }
         }
-        recyclerViewEditGoals.apply {
-            layoutManager = LinearLayoutManager(context)
-            hasFixedSize()
-            itemAnimator = DefaultItemAnimator()
-            recyclerViewEditGoals.adapter = ItemsGoalAdapters(context, listGoals)
-            //add listener delete
-        }
-    }
-
-    fun addNewItemToMap(view: View) {
-        val nameGoal = nameNewItemEditText.text.toString().trim()
-        if (nameGoal.isNotEmpty()) {
-            itemsGoalMap.plusAssign(nameGoal to iconNewItemImageView.tag.toString())
-            nameNewItemEditText.text.clear()
-        }
-        else Snackbar.make(rootLayout, "Input your goal.", Snackbar.LENGTH_SHORT)
         getGoals()
     }
 
+    private fun initAllGoalsByName() {
+        val name = nameListGoals.text.toString().trim()
+        if (this::allListGoals.isInitialized && allListGoals.isNotEmpty())
+            allListGoals.toMutableList().clear()
+        allListGoals = goalsDBHelper.queryGoals(name)
+    }
+
+    private fun getGoals() = recyclerViewEditGoals.apply {
+        layoutManager = LinearLayoutManager(context)
+        hasFixedSize()
+        itemAnimator = DefaultItemAnimator()
+        adapter = ItemsGoalAdapters(context, allListGoals)
+        /*addOnItemTouchListener(RecyclerItemClickListener(context, this,
+                object : RecyclerItemClickListener.OnItemClickListener {
+                    override fun onItemClick(view: View?, position: Int) {
+                        Log.d("MyTag", "This is onItemClick---${view?.let {
+                            this@apply.getChildAdapterPosition(it)}} ------ $position")
+                    }
+
+                    override fun onLongItemClick(view: View?, position: Int) {
+                        Log.d("MyTag", "This is onLongItemClick")
+                    }
+                })
+        )*/
+    }
+
+
+    fun addNewItemToMap(view: View) {
+        val nameGoal = nameNewItemEditText.text.toString().trim()
+        val nameList = nameNewItemEditText.text.toString().trim()
+        if (nameGoal.isNotEmpty()) {
+            itemsGoalMap.plusAssign(nameGoal to iconNewItemImageView.tag.toString())
+            nameNewItemEditText.text.clear()
+        } else Snackbar.make(rootLayout, "Input your goal.", Snackbar.LENGTH_SHORT)
+        saveListGoalToDB()
+        itemsGoalMap.clear()
+        initAllGoalsByName()
+        recyclerViewEditGoals.adapter = ItemsGoalAdapters(this, allListGoals)
+    }
+
+    /*tailrec fun checkTheSameNameList() {
+        val listAllNamesLists = goalsDBHelper.queryGoals(null).toSet().map { it.nameListGoals }
+        if (listAllNamesLists.contains(inputListName)) inputListName // add tailrec fun for check
+        else inputListName + "1"
+    }*/
 
     private fun saveListGoalToDB() {
-        val listAllNamesLists = GoalDBOpenHelper(this)
-            .queryGoals(null).toSet().map { it.nameListGoals }
-        val inputListName = nameListGoals.text.toString()
-        val nameListGoals = inputListName
-//            if (listAllNamesLists.contains(inputListName)) inputListName // add tailrec fun for check
-//        else inputListName + "1"
-
+        val inputListName = if (currentListName != null) currentListName
+        else nameListGoals.text.toString()
         when {
-            nameListGoals.isEmpty() ->
+            inputListName!!.isEmpty() ->
                 Snackbar.make(rootLayout, "Input the name", Snackbar.LENGTH_SHORT).show()
             itemsGoalMap.isEmpty() ->
                 Snackbar.make(rootLayout, "Input several goals", Snackbar.LENGTH_SHORT).show()
@@ -104,7 +122,7 @@ class EditItemsListActivity : AppCompatActivity() {
         val contentResolver = contentResolver
         for (i in itemsGoalMap.keys.indices) {
             contentValues.apply {
-                put(COLUMN_NAME_LIST, nameListGoals)
+                put(COLUMN_NAME_LIST, inputListName)
                 put(COLUMN_NAME_ITEM_GOAL, itemsGoalMap.keys.toList()[i])
                 put(COLUMN_NAME_ICON_GOAL, itemsGoalMap.values.toList()[i])
                 val uri = contentResolver.insert(CONTENT_URI, contentValues)
@@ -113,7 +131,6 @@ class EditItemsListActivity : AppCompatActivity() {
                 else Log.d("MyLog", "Insertion of data is successful")
             }
         }
-        finish()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -133,10 +150,6 @@ class EditItemsListActivity : AppCompatActivity() {
             }
         }
         return super.onOptionsItemSelected(item)
-    }
-    override fun onDestroy() {
-        super.onDestroy()
-        println("OnDestroy")
     }
 }
 
