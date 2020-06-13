@@ -36,6 +36,7 @@ class EditItemsListActivity : AppCompatActivity() {
     private lateinit var addNewItemToListImgBtn: FloatingActionButton
     private lateinit var recyclerViewEditGoals: RecyclerView
     private lateinit var goalContentProvider: GoalsContentProvider
+    private lateinit var itemGoalsAdapter: ItemsGoalAdapters
     private lateinit var goalsDBHelper: GoalDBOpenHelper
     private lateinit var allListGoals: List<Goal>
     private var currentListName: String? = null
@@ -60,7 +61,8 @@ class EditItemsListActivity : AppCompatActivity() {
                 initAllGoalsByName()
             }
         }
-        getGoals()
+        itemGoalsAdapter = ItemsGoalAdapters(this, allListGoals.toTypedArray())
+        createRecycler()
     }
 
     private fun initAllGoalsByName() {
@@ -70,25 +72,12 @@ class EditItemsListActivity : AppCompatActivity() {
         allListGoals = goalsDBHelper.queryGoals(name)
     }
 
-    private fun getGoals() = recyclerViewEditGoals.apply {
+    private fun createRecycler() = recyclerViewEditGoals.apply {
         layoutManager = LinearLayoutManager(context)
         hasFixedSize()
         itemAnimator = DefaultItemAnimator()
-        adapter = ItemsGoalAdapters(context, allListGoals)
-        /*addOnItemTouchListener(RecyclerItemClickListener(context, this,
-                object : RecyclerItemClickListener.OnItemClickListener {
-                    override fun onItemClick(view: View?, position: Int) {
-                        Log.d("MyTag", "This is onItemClick---${view?.let {
-                            this@apply.getChildAdapterPosition(it)}} ------ $position")
-                    }
-
-                    override fun onLongItemClick(view: View?, position: Int) {
-                        Log.d("MyTag", "This is onLongItemClick")
-                    }
-                })
-        )*/
+        adapter = itemGoalsAdapter
     }
-
 
     fun addNewItemToMap(view: View) {
         val nameGoal = nameNewItemEditText.text.toString().trim()
@@ -100,14 +89,8 @@ class EditItemsListActivity : AppCompatActivity() {
         saveListGoalToDB()
         itemsGoalMap.clear()
         initAllGoalsByName()
-        recyclerViewEditGoals.adapter = ItemsGoalAdapters(this, allListGoals)
+        itemGoalsAdapter.updateData(allListGoals.toTypedArray())
     }
-
-    /*tailrec fun checkTheSameNameList() {
-        val listAllNamesLists = goalsDBHelper.queryGoals(null).toSet().map { it.nameListGoals }
-        if (listAllNamesLists.contains(inputListName)) inputListName // add tailrec fun for check
-        else inputListName + "1"
-    }*/
 
     private fun saveListGoalToDB() {
         val inputListName = if (currentListName != null) currentListName

@@ -8,6 +8,7 @@ import android.view.MotionEvent
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.OnItemTouchListener
+import com.quantumman.randomgoals.R
 
 
 class RecyclerItemClickListener(context: Context?, recyclerView: RecyclerView,
@@ -24,7 +25,6 @@ class RecyclerItemClickListener(context: Context?, recyclerView: RecyclerView,
         if (childView != null && mListener != null && mGestureDetector.onTouchEvent(e)) {
             mListener.onItemClick(childView, view.getChildAdapterPosition(childView))
             Log.d("MyTag", "This is onInterceptTouchEvent")
-
             return true
         }
         return false
