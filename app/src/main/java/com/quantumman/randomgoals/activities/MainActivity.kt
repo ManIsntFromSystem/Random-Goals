@@ -1,6 +1,8 @@
 package com.quantumman.randomgoals.activities
 
 import android.content.Intent
+import android.database.Cursor
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -8,6 +10,11 @@ import android.widget.*
 import com.quantumman.randomgoals.R
 import com.quantumman.randomgoals.data.GoalDBOpenHelper
 import com.quantumman.randomgoals.data.GoalsContentProvider
+import com.quantumman.randomgoals.data.GoalsContract.GoalsListEntry.COLUMN_ICON_GOAL
+import com.quantumman.randomgoals.data.GoalsContract.GoalsListEntry.CONTENT_URI
+import com.quantumman.randomgoals.data.GoalsContract.GoalsListEntry.CONTENT_URI_LIST
+import com.quantumman.randomgoals.data.GoalsContract.GoalsListEntry.ID_LIST
+import com.quantumman.randomgoals.data.GoalsContract.GoalsListEntry.TABLE_NAME_LIST
 import com.quantumman.randomgoals.model.Goal
 
 class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
@@ -56,10 +63,8 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
         if (this::initialGoalsLists.isInitialized && initialGoalsLists.isNotEmpty()){
             initialGoalsLists.toMutableList().clear()
         }
-        initialGoalsLists = GoalDBOpenHelper(this).queryGoals(null)
-            .map { it.nameListGoals }
-            .distinct()
-            .toList()
+        contentResolver.query(CONTENT_URI_LIST, arrayOf(ID_LIST, TABLE_NAME_LIST, COLUMN_ICON_GOAL), null, null, null, null, null)
+        initialGoalsLists
     }
 
     override fun onResume() {

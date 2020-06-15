@@ -1,9 +1,7 @@
 package com.quantumman.randomgoals.activities
 
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.DefaultItemAnimator
@@ -14,8 +12,8 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import com.quantumman.randomgoals.R
 import com.quantumman.randomgoals.data.*
-import com.quantumman.randomgoals.data.GoalsContract.MemberEntry.COLUMN_NAME_LIST
-import com.quantumman.randomgoals.data.GoalsContract.MemberEntry.CONTENT_URI
+import com.quantumman.randomgoals.data.GoalsContract.ItemGoalEntry.COLUMN_NAME_LIST
+import com.quantumman.randomgoals.data.GoalsContract.ItemGoalEntry.CONTENT_URI
 import com.quantumman.randomgoals.model.Goal
 import com.quantumman.randomgoals.util.VerticalSpacingItemDecorator
 import kotlinx.android.synthetic.main.activity_list_goals.*

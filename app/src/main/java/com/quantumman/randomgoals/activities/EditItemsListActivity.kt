@@ -19,12 +19,11 @@ import com.google.android.material.snackbar.Snackbar
 import com.quantumman.randomgoals.R
 import com.quantumman.randomgoals.data.GoalDBOpenHelper
 import com.quantumman.randomgoals.data.GoalsContentProvider
-import com.quantumman.randomgoals.data.GoalsContract.MemberEntry.COLUMN_NAME_ICON_GOAL
-import com.quantumman.randomgoals.data.GoalsContract.MemberEntry.COLUMN_NAME_ITEM_GOAL
-import com.quantumman.randomgoals.data.GoalsContract.MemberEntry.COLUMN_NAME_LIST
-import com.quantumman.randomgoals.data.GoalsContract.MemberEntry.CONTENT_URI
+import com.quantumman.randomgoals.data.GoalsContract.ItemGoalEntry.COLUMN_NAME_ICON_GOAL
+import com.quantumman.randomgoals.data.GoalsContract.ItemGoalEntry.COLUMN_NAME_ITEM_GOAL
+import com.quantumman.randomgoals.data.GoalsContract.ItemGoalEntry.COLUMN_NAME_LIST
+import com.quantumman.randomgoals.data.GoalsContract.ItemGoalEntry.CONTENT_URI
 import com.quantumman.randomgoals.data.ItemsGoalAdapters
-import com.quantumman.randomgoals.data.RecyclerItemClickListener
 import com.quantumman.randomgoals.model.Goal
 import kotlinx.android.synthetic.main.activity_edit_items_list.*
 

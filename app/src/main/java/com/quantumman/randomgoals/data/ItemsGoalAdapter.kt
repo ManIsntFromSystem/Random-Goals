@@ -3,7 +3,6 @@ package com.quantumman.randomgoals.data
 import android.content.ContentUris
 import android.content.Context
 import android.net.Uri
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,7 +11,6 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.quantumman.randomgoals.R
 import com.quantumman.randomgoals.model.Goal
-import com.quantumman.randomgoals.util.listen
 
 class ItemsGoalAdapters(private val context: Context, goals: Array<Goal>) :
     RecyclerView.Adapter<ItemsGoalAdapters.ItemsGoalViewHolder>() {
@@ -35,7 +33,7 @@ class ItemsGoalAdapters(private val context: Context, goals: Array<Goal>) :
     override fun onBindViewHolder(holder: ItemsGoalViewHolder, position: Int) {
         val currentGoal = listGoals[position]
         val imageResource: Int = context.resources
-            .getIdentifier(currentGoal.iconGoal, "drawable", context.packageName)
+            .getIdentifier(currentGoal.goalListNames, "drawable", context.packageName)
         holder.nameItemGoalTxt.text = currentGoal.nameGoal
         holder.iconGoalImageView.setImageResource(imageResource)
         holder.deleteItemGoalBtn.setOnClickListener { removeItem(position) }
@@ -48,7 +46,7 @@ class ItemsGoalAdapters(private val context: Context, goals: Array<Goal>) :
     }
 
     private fun removeItem(position: Int) {
-        val uri: Uri = ContentUris.withAppendedId(GoalsContract.MemberEntry.CONTENT_URI,
+        val uri: Uri = ContentUris.withAppendedId(GoalsContract.ItemGoalEntry.CONTENT_URI,
             listGoals[position].id.toLong())
         listGoals.removeAt(position)
         notifyItemRemoved(position)
