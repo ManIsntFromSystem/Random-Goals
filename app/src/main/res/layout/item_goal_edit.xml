@@ -13,13 +13,6 @@
     android:orientation="horizontal"
     tools:ignore="UseCompoundDrawables">
 
-    <ImageView
-        android:id="@+id/goalEditImageView"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_marginEnd="10dp"
-        android:contentDescription="@string/image_edit_desc" />
-
     <EditText
         android:id="@+id/nameItemGoalTxt"
         android:layout_width="0dp"

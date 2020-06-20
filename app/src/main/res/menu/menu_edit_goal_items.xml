@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/save_list_goals"
+        android:visible="false"
         android:title="@string/save_list_goals_item_menu"
-        android:icon="@drawable/ic_floppy_disk"
+        android:icon="@drawable/ic_diskette_1"
         app:showAsAction="always"/>
 </menu>

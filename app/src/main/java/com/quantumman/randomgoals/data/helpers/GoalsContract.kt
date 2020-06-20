@@ -1,4 +1,4 @@
-package com.quantumman.randomgoals.data
+package com.quantumman.randomgoals.data.helpers
 
 import android.content.ContentResolver
 import android.net.Uri
@@ -19,7 +19,10 @@ object GoalsContract {
         const val COLUMN_NAME_GOAL = "nameGoal"
         const val COLUMN_ID_LIST = "goalsList"
         @JvmField
-        val CONTENT_URI_GOAL: Uri = Uri.withAppendedPath(BASE_CONTENT_URI, PATH_GOAL)
+        val CONTENT_URI_GOAL: Uri = Uri.withAppendedPath(
+            BASE_CONTENT_URI,
+            PATH_GOAL
+        )
         const val CONTENT_MULTIPLE_GOALS = "${ContentResolver.CURSOR_DIR_BASE_TYPE}/$AUTHORITY/$PATH_GOAL"
         const val CONTENT_SINGLE_GOAL = "${ContentResolver.CURSOR_ITEM_BASE_TYPE}/$AUTHORITY/$PATH_GOAL"
     }
@@ -29,7 +32,10 @@ object GoalsContract {
         const val COLUMN_NAME_LIST = "nameList"
         const val COLUMN_ICON_GOAL = "nameIconGoal"
         @JvmField
-        val CONTENT_URI_LIST: Uri = Uri.withAppendedPath(BASE_CONTENT_URI, PATH_LIST)
+        val CONTENT_URI_LIST: Uri = Uri.withAppendedPath(
+            BASE_CONTENT_URI,
+            PATH_LIST
+        )
         const val CONTENT_MULTIPLE_LISTS = "${ContentResolver.CURSOR_DIR_BASE_TYPE}/$AUTHORITY/$PATH_LIST"
         const val CONTENT_SINGLE_LIST = "${ContentResolver.CURSOR_ITEM_BASE_TYPE}/$AUTHORITY/$PATH_LIST"
     }

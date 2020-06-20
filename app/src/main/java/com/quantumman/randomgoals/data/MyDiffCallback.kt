@@ -2,7 +2,7 @@ package com.quantumman.randomgoals.data
 
 import androidx.annotation.Nullable
 import androidx.recyclerview.widget.DiffUtil
-import com.quantumman.randomgoals.model.Goal
+import com.quantumman.randomgoals.app.model.Goal
 
 class MyDiffCallback(newPersons: List<Goal>?, oldPersons: List<Goal>?): DiffUtil.Callback() {
 

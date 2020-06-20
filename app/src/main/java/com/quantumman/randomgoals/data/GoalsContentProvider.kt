@@ -5,21 +5,20 @@ import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.net.Uri
 import android.util.Log
-import com.quantumman.randomgoals.data.GoalsContract.AUTHORITY
-import com.quantumman.randomgoals.data.GoalsContract.PATH_GOAL
-import com.quantumman.randomgoals.data.GoalsContract.PATH_LIST
-import com.quantumman.randomgoals.data.GoalsContract.ItemGoalEntry.TABLE_NAME_GOAL
-import com.quantumman.randomgoals.data.GoalsContract.ItemGoalEntry.ID_GOAL
-import com.quantumman.randomgoals.data.GoalsContract.ItemGoalEntry.COLUMN_NAME_GOAL
-import com.quantumman.randomgoals.data.GoalsContract.ItemGoalEntry.COLUMN_ID_LIST
-import com.quantumman.randomgoals.data.GoalsContract.ItemGoalEntry.CONTENT_MULTIPLE_GOALS
-import com.quantumman.randomgoals.data.GoalsContract.ItemGoalEntry.CONTENT_SINGLE_GOAL
-import com.quantumman.randomgoals.data.GoalsContract.GoalsListEntry.TABLE_NAME_LIST
-import com.quantumman.randomgoals.data.GoalsContract.GoalsListEntry.ID_LIST
-import com.quantumman.randomgoals.data.GoalsContract.GoalsListEntry.COLUMN_NAME_LIST
-import com.quantumman.randomgoals.data.GoalsContract.GoalsListEntry.COLUMN_ICON_GOAL
-import com.quantumman.randomgoals.data.GoalsContract.GoalsListEntry.CONTENT_MULTIPLE_LISTS
-import com.quantumman.randomgoals.data.GoalsContract.GoalsListEntry.CONTENT_SINGLE_LIST
+import com.quantumman.randomgoals.data.helpers.GoalsContract.AUTHORITY
+import com.quantumman.randomgoals.data.helpers.GoalsContract.PATH_GOAL
+import com.quantumman.randomgoals.data.helpers.GoalsContract.PATH_LIST
+import com.quantumman.randomgoals.data.helpers.GoalsContract.ItemGoalEntry.TABLE_NAME_GOAL
+import com.quantumman.randomgoals.data.helpers.GoalsContract.ItemGoalEntry.ID_GOAL
+import com.quantumman.randomgoals.data.helpers.GoalsContract.ItemGoalEntry.COLUMN_NAME_GOAL
+import com.quantumman.randomgoals.data.helpers.GoalsContract.ItemGoalEntry.CONTENT_MULTIPLE_GOALS
+import com.quantumman.randomgoals.data.helpers.GoalsContract.ItemGoalEntry.CONTENT_SINGLE_GOAL
+import com.quantumman.randomgoals.data.helpers.GoalsContract.GoalsListEntry.TABLE_NAME_LIST
+import com.quantumman.randomgoals.data.helpers.GoalsContract.GoalsListEntry.ID_LIST
+import com.quantumman.randomgoals.data.helpers.GoalsContract.GoalsListEntry.COLUMN_NAME_LIST
+import com.quantumman.randomgoals.data.helpers.GoalsContract.GoalsListEntry.CONTENT_MULTIPLE_LISTS
+import com.quantumman.randomgoals.data.helpers.GoalsContract.GoalsListEntry.CONTENT_SINGLE_LIST
+import com.quantumman.randomgoals.data.helpers.GoalDBOpenHelper
 
 class GoalsContentProvider() : ContentProvider() {
     private var goalsDBHelper: GoalDBOpenHelper? = null
@@ -34,12 +33,13 @@ class GoalsContentProvider() : ContentProvider() {
             addURI(AUTHORITY, PATH_GOAL, MATCHER_ALL_GOAL)
             addURI(AUTHORITY,"${PATH_GOAL}/#", MATCHER_GOAL)
             addURI(AUTHORITY, PATH_LIST, MATCHER_ALL_LIST)
-            addURI(AUTHORITY,"${PATH_GOAL}/#", MATCHER_LIST)
+            addURI(AUTHORITY,"${PATH_LIST}/#", MATCHER_LIST)
         }
     }
 
     override fun onCreate(): Boolean {
-        goalsDBHelper = GoalDBOpenHelper(context)
+        goalsDBHelper =
+            GoalDBOpenHelper(context)
         return true
     }
 
@@ -78,9 +78,9 @@ class GoalsContentProvider() : ContentProvider() {
     }
 
     override fun insert(uri: Uri, values: ContentValues?): Uri? {
-        val nameGoal = values!!.getAsString(COLUMN_NAME_GOAL)
+        if (values!!.containsKey(COLUMN_NAME_GOAL)) values.getAsString(COLUMN_NAME_GOAL)
             ?: throw IllegalArgumentException("Input goal name")
-        val nameListGoals = values.getAsString(COLUMN_NAME_LIST)
+        if (values.containsKey(COLUMN_NAME_LIST)) values.getAsString(COLUMN_NAME_LIST)
             ?: throw IllegalArgumentException("Input list name")
         val db: SQLiteDatabase = goalsDBHelper!!.writableDatabase
         val resultUri = when (uriMatcher.match(uri)) {
@@ -160,8 +160,8 @@ class GoalsContentProvider() : ContentProvider() {
         return when (uriMatcher.match(uri)) {
             MATCHER_ALL_GOAL -> CONTENT_MULTIPLE_GOALS
             MATCHER_GOAL -> CONTENT_SINGLE_GOAL
-            MATCHER_LIST -> CONTENT_MULTIPLE_LISTS
-            MATCHER_ALL_LIST -> CONTENT_SINGLE_LIST
+            MATCHER_ALL_LIST -> CONTENT_MULTIPLE_LISTS
+            MATCHER_LIST -> CONTENT_SINGLE_LIST
             else -> throw IllegalArgumentException("Unknown URI: $uri")
         }
     }

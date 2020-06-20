@@ -9,10 +9,10 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.quantumman.randomgoals.R
-import com.quantumman.randomgoals.model.Goal
 import com.quantumman.randomgoals.data.ListGoalsAdapter.GoalViewHolder
+import com.quantumman.randomgoals.app.model.ListNames
 
-class ListGoalsAdapter(private val context: Context, private val goals: List<Goal>) :
+class ListGoalsAdapter(private val context: Context, private val listNames: List<ListNames>) :
     RecyclerView.Adapter<GoalViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GoalViewHolder {
@@ -21,12 +21,12 @@ class ListGoalsAdapter(private val context: Context, private val goals: List<Goa
         return GoalViewHolder(view)
     }
 
-    override fun getItemCount() = goals.size
+    override fun getItemCount() = listNames.size
 
     override fun onBindViewHolder(holder: GoalViewHolder, position: Int) {
-        val currentGoal = goals[position]
-        val nameGoal = currentGoal.nameGoal
-        val icon = currentGoal.iconGoal
+        val currentGoal = listNames[position]
+        val nameGoal = currentGoal.nameList
+        val icon = currentGoal.listIcon
         val imageResource = context.resources
             .getIdentifier(icon, "drawable", context.packageName)
         holder.nameItemGoalTxt.text = nameGoal
@@ -34,7 +34,7 @@ class ListGoalsAdapter(private val context: Context, private val goals: List<Goa
     }
 
     inner class GoalViewHolder(itemView: View) : ViewHolder(itemView) {
-        var iconGoalImageView: ImageView = itemView.findViewById(R.id.goalEditImageView)
+        var iconGoalImageView: ImageView = itemView.findViewById(R.id.iconItemGoalsList)
         var nameItemGoalTxt: TextView = itemView.findViewById(R.id.nameItemGoalTxt)
     }
 }

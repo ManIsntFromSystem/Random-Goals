@@ -1,4 +1,4 @@
-package com.quantumman.randomgoals.data
+package com.quantumman.randomgoals.data.helpers
 
 import android.annotation.SuppressLint
 import android.content.ContentUris
@@ -6,19 +6,20 @@ import android.content.Context
 import android.content.UriMatcher
 import android.database.sqlite.*
 import android.net.Uri
-import com.quantumman.randomgoals.data.GoalsContract.DATABASE_NAME
-import com.quantumman.randomgoals.data.GoalsContract.DATABASE_VERSION
-import com.quantumman.randomgoals.data.GoalsContract.AUTHORITY
-import com.quantumman.randomgoals.data.GoalsContract.PATH_GOAL
-import com.quantumman.randomgoals.data.GoalsContract.ItemGoalEntry.TABLE_NAME_GOAL
-import com.quantumman.randomgoals.data.GoalsContract.ItemGoalEntry.ID_GOAL
-import com.quantumman.randomgoals.data.GoalsContract.ItemGoalEntry.COLUMN_NAME_GOAL
-import com.quantumman.randomgoals.data.GoalsContract.ItemGoalEntry.COLUMN_ID_LIST
-import com.quantumman.randomgoals.data.GoalsContract.GoalsListEntry.TABLE_NAME_LIST
-import com.quantumman.randomgoals.data.GoalsContract.GoalsListEntry.ID_LIST
-import com.quantumman.randomgoals.data.GoalsContract.GoalsListEntry.COLUMN_NAME_LIST
-import com.quantumman.randomgoals.data.GoalsContract.GoalsListEntry.COLUMN_ICON_GOAL
-import com.quantumman.randomgoals.model.Goal
+import com.quantumman.randomgoals.data.helpers.GoalsContract.DATABASE_NAME
+import com.quantumman.randomgoals.data.helpers.GoalsContract.DATABASE_VERSION
+import com.quantumman.randomgoals.data.helpers.GoalsContract.AUTHORITY
+import com.quantumman.randomgoals.data.helpers.GoalsContract.PATH_GOAL
+import com.quantumman.randomgoals.data.helpers.GoalsContract.ItemGoalEntry.TABLE_NAME_GOAL
+import com.quantumman.randomgoals.data.helpers.GoalsContract.ItemGoalEntry.ID_GOAL
+import com.quantumman.randomgoals.data.helpers.GoalsContract.ItemGoalEntry.COLUMN_NAME_GOAL
+import com.quantumman.randomgoals.data.helpers.GoalsContract.ItemGoalEntry.COLUMN_ID_LIST
+import com.quantumman.randomgoals.data.helpers.GoalsContract.GoalsListEntry.TABLE_NAME_LIST
+import com.quantumman.randomgoals.data.helpers.GoalsContract.GoalsListEntry.ID_LIST
+import com.quantumman.randomgoals.data.helpers.GoalsContract.GoalsListEntry.COLUMN_NAME_LIST
+import com.quantumman.randomgoals.data.helpers.GoalsContract.GoalsListEntry.COLUMN_ICON_GOAL
+import com.quantumman.randomgoals.app.model.Goal
+import com.quantumman.randomgoals.app.model.ListNames
 
 class GoalDBOpenHelper internal constructor(context: Context?) :
     SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
@@ -39,10 +40,43 @@ class GoalDBOpenHelper internal constructor(context: Context?) :
     }
 
     @SuppressLint("Recycle")
+    fun queryLists(id: Int?, inputName: String?): List<ListNames> {
+        val itemsGoalList: MutableList<ListNames> = mutableListOf()
+        val selectQuery = when {
+            id != null -> "SELECT * FROM $TABLE_NAME_LIST WHERE $ID_LIST = ?"
+            inputName != null -> "SELECT * FROM $TABLE_NAME_LIST WHERE $COLUMN_NAME_LIST = ?"
+            else -> "SELECT * FROM $TABLE_NAME_LIST"
+        }
+        val selectionArgs = when {
+            id != null -> arrayOf(id.toString())
+            inputName != null -> arrayOf(inputName)
+            else -> null
+        }
+        val db = writableDatabase
+        val cursor = db.rawQuery(selectQuery, selectionArgs)
+        while (cursor.moveToNext()) {
+            val indexId = cursor.getColumnIndex(ID_LIST)
+            val indexName = cursor.getColumnIndex(COLUMN_NAME_LIST)
+            val indexIcon = cursor.getColumnIndex(COLUMN_ICON_GOAL)
+            val gid = cursor.getInt(indexId)
+            val name = cursor.getString(indexName)
+            val icon = cursor.getString(indexIcon)
+            val listNames =
+                ListNames(
+                    gid,
+                    name,
+                    icon
+                )
+            itemsGoalList.add(listNames)
+        }
+        return itemsGoalList.toList()
+    }
+
+    @SuppressLint("Recycle")
     fun queryGoals(nameList: String?): List<Goal> {
         val itemsGoalList: MutableList<Goal> = mutableListOf()
         val selectQuery = when {
-            nameList != null -> "SELECT * FROM $TABLE_NAME_GOAL WHERE $COLUMN_ID_LIST = ?"
+            nameList != null -> "SELECT * FROM $TABLE_NAME_GOAL WHERE $COLUMN_ID_LIST=?"
             else -> "SELECT * FROM $TABLE_NAME_GOAL"
         }
         val selectionArgs = when {
@@ -58,7 +92,8 @@ class GoalDBOpenHelper internal constructor(context: Context?) :
             val gid = cursor.getInt(indexId)
             val name = cursor.getString(indexList)
             val list = cursor.getInt(indexGoal)
-            val goal = Goal(gid, name, list)
+            val goal =
+                Goal(gid, name, list)
             itemsGoalList.add(goal)
         }
         return itemsGoalList.toList()
@@ -103,8 +138,12 @@ class GoalDBOpenHelper internal constructor(context: Context?) :
         private const val MATCHER_GOAL = 777
 
         private val uriMatcher = UriMatcher(UriMatcher.NO_MATCH).apply {
-            addURI(AUTHORITY, PATH_GOAL, MATCHER_WHOLE_TABLE)
-            addURI(AUTHORITY,"${PATH_GOAL}/#", MATCHER_GOAL)
+            addURI(AUTHORITY, PATH_GOAL,
+                MATCHER_WHOLE_TABLE
+            )
+            addURI(AUTHORITY,"${PATH_GOAL}/#",
+                MATCHER_GOAL
+            )
         }
     }
 }

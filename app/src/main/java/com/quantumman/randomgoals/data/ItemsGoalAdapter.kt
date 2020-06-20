@@ -10,7 +10,9 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.quantumman.randomgoals.R
-import com.quantumman.randomgoals.model.Goal
+import com.quantumman.randomgoals.data.helpers.GoalsContract.ItemGoalEntry.CONTENT_URI_GOAL
+import com.quantumman.randomgoals.app.model.Goal
+import com.quantumman.randomgoals.data.helpers.GoalDBOpenHelper
 
 class ItemsGoalAdapters(private val context: Context, goals: Array<Goal>) :
     RecyclerView.Adapter<ItemsGoalAdapters.ItemsGoalViewHolder>() {
@@ -32,25 +34,25 @@ class ItemsGoalAdapters(private val context: Context, goals: Array<Goal>) :
 
     override fun onBindViewHolder(holder: ItemsGoalViewHolder, position: Int) {
         val currentGoal = listGoals[position]
-        val imageResource: Int = context.resources
-            .getIdentifier(currentGoal.goalListNames, "drawable", context.packageName)
+        //saved for future
+        //val imageResource: Int = context.resources
+        //    .getIdentifier("icon", "drawable", context.packageName)
         holder.nameItemGoalTxt.text = currentGoal.nameGoal
-        holder.iconGoalImageView.setImageResource(imageResource)
+        println("Position: $position")
         holder.deleteItemGoalBtn.setOnClickListener { removeItem(position) }
     }
 
     class ItemsGoalViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        var iconGoalImageView: ImageView = itemView.findViewById(R.id.goalEditImageView)
         var deleteItemGoalBtn: ImageView = itemView.findViewById(R.id.deleteItemGoalBtn)
         var nameItemGoalTxt: TextView = itemView.findViewById(R.id.nameItemGoalTxt)
     }
 
     private fun removeItem(position: Int) {
-        val uri: Uri = ContentUris.withAppendedId(GoalsContract.ItemGoalEntry.CONTENT_URI,
-            listGoals[position].id.toLong())
+        val uri: Uri = ContentUris.withAppendedId(CONTENT_URI_GOAL, listGoals[position].id.toLong())
         listGoals.removeAt(position)
         notifyItemRemoved(position)
         notifyItemRangeChanged(position, itemCount)
-        GoalDBOpenHelper(context).delListGoalsByListName(uri, null, null)
+        GoalDBOpenHelper(context)
+            .delListGoalsByListName(uri, null, null)
     }
 }
