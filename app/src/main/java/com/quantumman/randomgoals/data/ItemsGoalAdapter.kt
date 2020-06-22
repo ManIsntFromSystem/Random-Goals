@@ -38,7 +38,6 @@ class ItemsGoalAdapters(private val context: Context, goals: Array<Goal>) :
         //val imageResource: Int = context.resources
         //    .getIdentifier("icon", "drawable", context.packageName)
         holder.nameItemGoalTxt.text = currentGoal.nameGoal
-        println("Position: $position")
         holder.deleteItemGoalBtn.setOnClickListener { removeItem(position) }
     }
 

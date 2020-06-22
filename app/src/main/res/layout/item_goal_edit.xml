@@ -7,31 +7,37 @@
     android:backgroundTint="#E3F2FD"
     android:layout_margin="4dp">
 
-<LinearLayout
+<RelativeLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal"
     tools:ignore="UseCompoundDrawables">
 
-    <EditText
-        android:id="@+id/nameItemGoalTxt"
-        android:layout_width="0dp"
+    <RelativeLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:layout_weight="1"
-        android:layout_marginEnd="10dp"
-        android:gravity="center"
-        android:maxEms="15"
-        android:textColor="#000000"
-        android:autofillHints="Input goal name..."
-        android:inputType="text"
-        tools:ignore="LabelFor" />
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_toStartOf="@+id/deleteItemGoalBtn">
+        <EditText
+            android:id="@+id/nameItemGoalTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:paddingStart="15dp"
+            android:paddingEnd="15dp"
+            android:gravity="center"
+            android:textColor="#000000"
+            android:autofillHints="Input goal name..."
+            android:inputType="text"
+            tools:ignore="LabelFor" />
+    </RelativeLayout>
 
     <ImageView
         android:id="@+id/deleteItemGoalBtn"
         android:layout_width="50dp"
         android:layout_height="50dp"
+        android:layout_alignParentEnd="true"
         android:src="@drawable/ic_baseline_delete_forever_24"
         android:contentDescription="@string/delete_item_goal" />
-</LinearLayout>
+</RelativeLayout>
 </androidx.cardview.widget.CardView>

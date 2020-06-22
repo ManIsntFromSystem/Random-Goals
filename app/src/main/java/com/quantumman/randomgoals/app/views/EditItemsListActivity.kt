@@ -30,6 +30,7 @@ import com.quantumman.randomgoals.data.helpers.GoalsContract.ItemGoalEntry.CONTE
 import com.quantumman.randomgoals.data.ItemsGoalAdapters
 import com.quantumman.randomgoals.app.model.Goal
 import com.quantumman.randomgoals.app.model.ListNames
+import com.quantumman.randomgoals.util.toEditable
 
 class EditItemsListActivity : AppCompatActivity() {
     private lateinit var etNameListGoals: EditText
@@ -37,12 +38,12 @@ class EditItemsListActivity : AppCompatActivity() {
     private lateinit var iconNewItemImageView: ImageView
     private lateinit var addNewItemToListImgBtn: FloatingActionButton
     private lateinit var recyclerViewEditGoals: RecyclerView
-    private lateinit var goalContentProvider: GoalsContentProvider
+    private lateinit var goalDBHelper: GoalDBOpenHelper
     private lateinit var itemGoalsAdapter: ItemsGoalAdapters
     private lateinit var myItemSaveMenu: MenuItem
     private lateinit var allListGoals: List<Goal>
     private lateinit var changedListNameInET: String
-    private lateinit var beforeChangedListNameInET: String
+    private var beforeChangedListNameInET = ""
     private var currentListName: ListNames? = null
     private var intentListName: String? = null
     private var intentListId: Int? = null
@@ -56,20 +57,23 @@ class EditItemsListActivity : AppCompatActivity() {
         iconNewItemImageView = findViewById(R.id.iconNewItemImageView)
         addNewItemToListImgBtn = findViewById(R.id.addNewItemToListImgBtn)
         recyclerViewEditGoals = findViewById(R.id.recyclerViewEditGoals)
-        goalContentProvider = GoalsContentProvider()
+        goalDBHelper = GoalDBOpenHelper(this)
         allListGoals = mutableListOf()
         initData()
         itemGoalsAdapter = ItemsGoalAdapters(this, allListGoals.toTypedArray())
         createRecycler()
-        etNameListGoals.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(s: Editable?) {}
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                changedListNameInET = s.toString()
-                myItemSaveMenu.isVisible = changedListNameInET != beforeChangedListNameInET
-            }
-        })
+        addListNameETListener()
     }
+
+    private fun addListNameETListener() =
+        etNameListGoals.addTextChangedListener(object : TextWatcher {
+        override fun afterTextChanged(s: Editable?) {}
+        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+            changedListNameInET = s.toString()
+            myItemSaveMenu.isVisible = changedListNameInET != beforeChangedListNameInET
+        }
+    })
 
     private fun initData() {
         intentListName = intent.getStringExtra("list_name")
@@ -83,14 +87,14 @@ class EditItemsListActivity : AppCompatActivity() {
 
     private fun updateCurrentListName(name: String) {
         beforeChangedListNameInET = name
-        currentListName = GoalDBOpenHelper(this).queryLists(null, name).first()
+        currentListName = goalDBHelper.queryLists(null, name).first()
     }
 
     private fun initAllGoalsByName() {
         if (this::allListGoals.isInitialized && allListGoals.isNotEmpty())
             allListGoals.toMutableList().clear()
         currentListName?.id?.let {
-            allListGoals = GoalDBOpenHelper(this).queryGoals(it.toString())
+            allListGoals = goalDBHelper.queryGoals(it.toString())
         }
     }
 
@@ -101,7 +105,7 @@ class EditItemsListActivity : AppCompatActivity() {
         adapter = itemGoalsAdapter
     }
 
-    fun addNewItemToMap(view: View) {
+    fun addNewItemGoalToDB(view: View) {
         val nameGoalList = etNameListGoals.text.toString().trim()
         val nameGoal = nameNewItemEditText.text.toString().trim()
         val rootView: View = window.decorView.findViewById(android.R.id.content)
@@ -111,15 +115,15 @@ class EditItemsListActivity : AppCompatActivity() {
             nameGoal.isEmpty() ->
                 Snackbar.make(rootView, "Input goal name", Snackbar.LENGTH_SHORT).show()
             else -> {
-                saveGoalToDB(nameGoal, nameGoalList)
+                saveDataToDB(nameGoal, nameGoalList)
                 initAllGoalsByName()
                 itemGoalsAdapter.updateData(allListGoals.toTypedArray())
             }
         }
     }
 
-    private fun saveGoalToDB(nameGoal: String, nameGoalList: String) {
-        if (intentListName.isNullOrBlank()) {
+    private fun saveDataToDB(nameGoal: String?, nameGoalList: String?) {
+        if (intentListName.isNullOrBlank() && nameGoalList != null) {
             ContentValues().apply {
                 put(COLUMN_NAME_LIST, nameGoalList)
                 put(COLUMN_ICON_GOAL, iconNewItemImageView.tag.toString())
@@ -129,18 +133,19 @@ class EditItemsListActivity : AppCompatActivity() {
             }
             updateCurrentListName(nameGoalList)
         }
-        ContentValues().apply {
-            put(COLUMN_NAME_GOAL, nameGoal)
-            put(COLUMN_ID_LIST, currentListName?.id)
-            val uri = contentResolver.insert(CONTENT_URI_GOAL, this)
-            if (uri == null) Log.d("MyLog", "Insertion of data in the table failed")
-            else Log.d("MyLog", "Insertion of data is successful")
+        if (nameGoal != null) {
+            ContentValues().apply {
+                put(COLUMN_NAME_GOAL, nameGoal)
+                put(COLUMN_ID_LIST, currentListName?.id)
+                val uri = contentResolver.insert(CONTENT_URI_GOAL, this)
+                if (uri == null) Log.d("MyLog", "Insertion of data in the table failed")
+                else Log.d("MyLog", "Insertion of data is successful")
+            }
+            nameNewItemEditText.text.clear()
         }
-        nameNewItemEditText.text.clear()
     }
 
     private fun updateListName() {
-        println("UpdateList: $changedListNameInET")
         ContentValues().apply {
             put(COLUMN_NAME_LIST, changedListNameInET)
             val uri = Uri.withAppendedPath(CONTENT_URI_LIST, currentListName!!.id.toString())
@@ -161,7 +166,8 @@ class EditItemsListActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.save_list_goals -> {
-                updateListName()
+                if (currentListName != null) updateListName()
+                else saveDataToDB(changedListNameInET, null)
                 myItemSaveMenu.isVisible = false
                 return true
             }
@@ -172,6 +178,14 @@ class EditItemsListActivity : AppCompatActivity() {
         }
         return super.onOptionsItemSelected(item)
     }
-}
 
-private fun String.toEditable() = Editable.Factory.getInstance().newEditable(this)
+    override fun onDestroy() {
+        super.onDestroy()
+        if (currentListName != null && allListGoals.isEmpty()) {
+            val uri = Uri.withAppendedPath(CONTENT_URI_LIST, currentListName?.id.toString())
+            goalDBHelper.delListGoalsByListName(uri, null, null)
+        }
+    }
+
+    fun ivChooseIconForListGoals(view: View) {}
+}
