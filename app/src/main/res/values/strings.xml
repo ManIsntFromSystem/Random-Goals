@@ -14,4 +14,12 @@
     <string name="desc_started_random_image">Started random image</string>
     <string name="save_list_goals_item_menu">Save list goals</string>
     <string name="delete_item_goal">delete item goal</string>
+    <string name="dialog_choose_icons">Choose icon for goals</string>
+    <string name="save">Save</string>
+    <string name="cancel">Cancel</string>
+    <string name="desc_icon_dialog_first">First Icon Dialog</string>
+    <string name="desc_second_icon_dialog">Second Icon Dialog</string>
+    <string name="desc_third_icon_dialog">Third Icon Dialog</string>
+    <string name="name">Name</string>
+    <string name="desc_chose_icon_for_list">Chose icon for list</string>
 </resources>
