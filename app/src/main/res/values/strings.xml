@@ -22,4 +22,6 @@
     <string name="desc_third_icon_dialog">Third Icon Dialog</string>
     <string name="name">Name</string>
     <string name="desc_chose_icon_for_list">Chose icon for list</string>
+    <string name="desc_icon_for_gaols">Icon for goals</string>
+    <string name="choose_goal_icon">Choose goal icon</string>
 </resources>

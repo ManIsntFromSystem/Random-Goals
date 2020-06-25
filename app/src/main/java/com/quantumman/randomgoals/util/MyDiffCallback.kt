@@ -1,4 +1,4 @@
-package com.quantumman.randomgoals.data
+package com.quantumman.randomgoals.util
 
 import androidx.annotation.Nullable
 import androidx.recyclerview.widget.DiffUtil

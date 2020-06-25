@@ -20,7 +20,6 @@ class GoalsListAdapter(private val context: Context,
         val view = LayoutInflater.from(context).inflate(
                 R.layout.item_list_goals,
                 parent, false)
-            println(goals)
         return GoalsListViewHolder(view, mOnGoalListener)
     }
 

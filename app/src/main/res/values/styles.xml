@@ -20,8 +20,8 @@
     </style>
 
     <style name="ThemeOverlay.App.MaterialAlertDialog" parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog">
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorSecondary">@color/colorPrimary</item>
+        <item name="colorPrimary">@color/colorPrimary_10</item>
+        <item name="colorSecondary">@color/colorPrimary_10</item>
         <item name="colorSurface">@color/colorAccent</item>
         <item name="colorOnSurface">@color/colorAccent</item>
         <item name="alertDialogStyle">@style/MaterialAlertDialog.App</item>

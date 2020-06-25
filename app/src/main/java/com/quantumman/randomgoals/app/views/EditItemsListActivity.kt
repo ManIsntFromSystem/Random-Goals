@@ -190,6 +190,6 @@ class EditItemsListActivity : AppCompatActivity() {
     fun ivChooseIconForListGoals(view: View) {
         val myDialogIcons = ChooseIconDialogFragment()
         val manager = supportFragmentManager
-        myDialogIcons.show(manager, "DialogIcons")
+        myDialogIcons.show(manager, "DialogIcons$")
     }
 }

@@ -1,4 +1,4 @@
-package com.quantumman.randomgoals.data
+package com.quantumman.randomgoals.util
 
 import android.content.Context
 import android.util.Log
@@ -8,7 +8,6 @@ import android.view.MotionEvent
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.OnItemTouchListener
-import com.quantumman.randomgoals.R
 
 
 class RecyclerItemClickListener(context: Context?, recyclerView: RecyclerView,
