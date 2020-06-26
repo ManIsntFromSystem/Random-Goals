@@ -34,7 +34,7 @@ class GoalsListAdapter(private val context: Context,
         var tvNameListGoal: TextView = itemView.findViewById(R.id.tvNameListGoal)
         private var mOnGoalListener: OnGoalListener = onGoalListener
         override fun onClick(view: View) {
-            Log.d("TAG", "onClick: $adapterPosition")
+            println("Adapter position: $adapterPosition")
             mOnGoalListener.onGoalClick(adapterPosition)
         }
 

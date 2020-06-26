@@ -4,13 +4,15 @@
 
     <application
         android:allowBackup="true"
+        android:fullBackupContent="@xml/backup_descriptor"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme"
-        android:fullBackupContent="@xml/backup_descriptor">
-        <activity android:name=".app.views.MainActivity"
+        android:theme="@style/AppTheme">
+        <activity android:name=".app.views.ChoosingNewIconForListName"></activity>
+        <activity
+            android:name=".app.views.MainActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -21,19 +23,20 @@
         <activity
             android:name=".app.views.EditItemsListActivity"
             android:label="Edit Goals"
-            android:screenOrientation="portrait"
-            android:parentActivityName=".app.views.ListGoalsActivity">
+            android:parentActivityName=".app.views.ListGoalsActivity"
+            android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".app.views.ListGoalsActivity"/>
+                android:value=".app.views.ListGoalsActivity" />
         </activity>
         <activity
             android:name=".app.views.ListGoalsActivity"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
+
         <provider
-            android:authorities="com.quantumman.randomgoals"
             android:name=".data.GoalsContentProvider"
-            android:exported="false"/>
+            android:authorities="com.quantumman.randomgoals"
+            android:exported="false" />
     </application>
 
 </manifest>

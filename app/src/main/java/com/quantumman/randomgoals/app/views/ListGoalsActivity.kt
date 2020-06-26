@@ -39,8 +39,7 @@ class ListGoalsActivity : AppCompatActivity(), GoalsListAdapter.OnGoalListener {
         addNewGoalFltActBtn = findViewById(R.id.addNewGoalFltActBtn)
         recyclerViewEditGoals = findViewById(R.id.recyclerViewListGoals)
         goalsContent = GoalsContentProvider()
-        goalsDBHelper =
-            GoalDBOpenHelper(this)
+        goalsDBHelper = GoalDBOpenHelper(this)
         listNamesGoals = mutableListOf()
         initLists()
         initRecycler()

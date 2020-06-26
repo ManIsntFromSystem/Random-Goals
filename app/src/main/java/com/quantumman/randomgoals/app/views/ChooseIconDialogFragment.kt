@@ -3,7 +3,11 @@ package com.quantumman.randomgoals.app.views
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.Dialog
+import android.content.ContentValues
+import android.content.Context
+import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.fragment.app.DialogFragment
 import androidx.recyclerview.widget.GridLayoutManager
@@ -12,6 +16,9 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.quantumman.randomgoals.R
 import com.quantumman.randomgoals.data.dialogIcons.DialogIconsRecyclerAdapter
 import com.quantumman.randomgoals.data.dialogIcons.MyIcon
+import com.quantumman.randomgoals.data.helpers.GoalsContract
+import com.quantumman.randomgoals.data.helpers.GoalsContract.GoalsListEntry.COLUMN_ICON_GOAL
+import com.quantumman.randomgoals.data.helpers.GoalsContract.GoalsListEntry.CONTENT_URI_LIST
 
 
 class ChooseIconDialogFragment() : DialogFragment() {
@@ -19,7 +26,14 @@ class ChooseIconDialogFragment() : DialogFragment() {
     private lateinit var recyclerDialogIcon: RecyclerView
     private lateinit var layout: RecyclerView.LayoutManager
     private lateinit var listener: ChoseIconInDialogListener
+    private var currentIdList: Int = -1
 
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        currentIdList = arguments?.getInt("currentIdList") ?: -1
+        println("CurrentIdList in Dialog: $currentIdList")
+    }
 
     @SuppressLint("InflateParams")
     private fun getIconView(): View {
@@ -38,7 +52,6 @@ class ChooseIconDialogFragment() : DialogFragment() {
             val builder = MaterialAlertDialogBuilder(requireContext())
             builder.setView(getIconView())
                 .setPositiveButton(R.string.save) { dialog, id ->
-                    println("$dialog ------  $id")
                     listener.onDialogPositiveButton(this)
                 }
                 .setNegativeButton(R.string.cancel) { dialog, id ->
@@ -51,6 +64,7 @@ class ChooseIconDialogFragment() : DialogFragment() {
     override fun onAttach(activity: Activity) {
         super.onAttach(activity)
         try {
+            if (context is Activity)
             listener = context as ChoseIconInDialogListener
         } catch (e: ClassCastException) {
             throw ClassCastException((context.toString() +

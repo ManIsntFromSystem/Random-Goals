@@ -1,6 +1,7 @@
 package com.quantumman.randomgoals.app.views
 
 import android.content.ContentValues
+import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.text.Editable
@@ -13,26 +14,28 @@ import android.widget.EditText
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NavUtils
+import androidx.fragment.app.DialogFragment
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import com.quantumman.randomgoals.R
+import com.quantumman.randomgoals.app.model.Goal
+import com.quantumman.randomgoals.app.model.ListNames
+import com.quantumman.randomgoals.data.ItemsGoalAdapters
+import com.quantumman.randomgoals.data.dialogIcons.DialogIconsRecyclerAdapter
 import com.quantumman.randomgoals.data.helpers.GoalDBOpenHelper
-import com.quantumman.randomgoals.data.GoalsContentProvider
 import com.quantumman.randomgoals.data.helpers.GoalsContract.GoalsListEntry.COLUMN_ICON_GOAL
 import com.quantumman.randomgoals.data.helpers.GoalsContract.GoalsListEntry.COLUMN_NAME_LIST
 import com.quantumman.randomgoals.data.helpers.GoalsContract.GoalsListEntry.CONTENT_URI_LIST
 import com.quantumman.randomgoals.data.helpers.GoalsContract.ItemGoalEntry.COLUMN_ID_LIST
 import com.quantumman.randomgoals.data.helpers.GoalsContract.ItemGoalEntry.COLUMN_NAME_GOAL
 import com.quantumman.randomgoals.data.helpers.GoalsContract.ItemGoalEntry.CONTENT_URI_GOAL
-import com.quantumman.randomgoals.data.ItemsGoalAdapters
-import com.quantumman.randomgoals.app.model.Goal
-import com.quantumman.randomgoals.app.model.ListNames
 import com.quantumman.randomgoals.util.toEditable
 
-class EditItemsListActivity : AppCompatActivity() {
+class EditItemsListActivity : AppCompatActivity(),
+    ChooseIconDialogFragment.ChoseIconInDialogListener {
     private lateinit var etNameListGoals: EditText
     private lateinit var nameNewItemEditText: EditText
     private lateinit var iconNewItemImageView: ImageView
@@ -179,6 +182,10 @@ class EditItemsListActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
+
+    override fun onDialogPositiveButton(dialog: DialogFragment) {
+        TODO("Not yet implemented")
+    }
     override fun onDestroy() {
         super.onDestroy()
         if (currentListName != null && allListGoals.isEmpty()) {
@@ -188,8 +195,34 @@ class EditItemsListActivity : AppCompatActivity() {
     }
 
     fun ivChooseIconForListGoals(view: View) {
-        val myDialogIcons = ChooseIconDialogFragment()
-        val manager = supportFragmentManager
-        myDialogIcons.show(manager, "DialogIcons$")
+        val intent = Intent(this, ChoosingNewIconForListName::class.java)
+        startActivityForResult(intent, REQUEST_CODE)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        when(resultCode) {
+            RESULT_OK ->
+            else ->
+        }
+    }
+
+    companion object {
+        const val REQUEST_CODE = 111
     }
 }
+
+
+
+
+/*
+* for dialog
+
+    fun ivChooseIconForListGoals(view: View) {
+        val myDialogIcons = ChooseIconDialogFragment()
+        val args = Bundle()
+        args.putInt("currentIdList", idListNames)
+        val manager = supportFragmentManager
+        myDialogIcons.arguments = args
+        myDialogIcons.show(manager, "DialogIcons")
+    }*/
