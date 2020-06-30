@@ -60,7 +60,7 @@ class GoalDBOpenHelper internal constructor(context: Context?) :
             val indexIcon = cursor.getColumnIndex(COLUMN_ICON_GOAL)
             val gid = cursor.getInt(indexId)
             val name = cursor.getString(indexName)
-            val icon = cursor.getString(indexIcon)
+            val icon = cursor.getInt(indexIcon)
             val listNames =
                 ListNames(
                     gid,
@@ -131,7 +131,7 @@ class GoalDBOpenHelper internal constructor(context: Context?) :
         private const val SQL_CREATE_TABLE_LISTS = ("CREATE TABLE $TABLE_NAME_LIST (" +
                 "$ID_LIST INTEGER PRIMARY KEY, " +
                 "$COLUMN_NAME_LIST TEXT UNIQUE NOT NULL, " +
-                "$COLUMN_ICON_GOAL TEXT)")
+                "$COLUMN_ICON_GOAL INTEGER)")
         private const val SQL_DELETE_LISTS = "DROP TABLE IF EXISTS $TABLE_NAME_GOAL"
 
         private const val MATCHER_WHOLE_TABLE = 333

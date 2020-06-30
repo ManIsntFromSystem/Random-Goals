@@ -1,7 +1,9 @@
 package com.quantumman.randomgoals.app.model
 
-data class ListNames(
+import java.io.Serializable
+
+data class ListNames (
     val id: Int = -1,
     val nameList: String = "",
-    val listIcon: String = ""
-) {}
+    var listIcon: Int = -1
+) : Serializable {}

@@ -1,28 +1,10 @@
 package com.quantumman.randomgoals.app.views
 
-import android.annotation.SuppressLint
-import android.app.Activity
-import android.app.Dialog
-import android.content.ContentValues
-import android.content.Context
-import android.net.Uri
-import android.os.Bundle
-import android.util.Log
-import android.view.View
 import androidx.fragment.app.DialogFragment
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.quantumman.randomgoals.R
-import com.quantumman.randomgoals.data.dialogIcons.DialogIconsRecyclerAdapter
-import com.quantumman.randomgoals.data.dialogIcons.MyIcon
-import com.quantumman.randomgoals.data.helpers.GoalsContract
-import com.quantumman.randomgoals.data.helpers.GoalsContract.GoalsListEntry.COLUMN_ICON_GOAL
-import com.quantumman.randomgoals.data.helpers.GoalsContract.GoalsListEntry.CONTENT_URI_LIST
 
 
 class ChooseIconDialogFragment() : DialogFragment() {
-    private lateinit var dialogIconAdapter: DialogIconsRecyclerAdapter
+   /* private lateinit var dialogIconAdapter: IconsRecyclerAdapter
     private lateinit var recyclerDialogIcon: RecyclerView
     private lateinit var layout: RecyclerView.LayoutManager
     private lateinit var listener: ChoseIconInDialogListener
@@ -42,7 +24,7 @@ class ChooseIconDialogFragment() : DialogFragment() {
         layout = GridLayoutManager(this.activity, 3)
         recyclerDialogIcon.layoutManager = layout
         recyclerDialogIcon.setHasFixedSize(true)
-        dialogIconAdapter = DialogIconsRecyclerAdapter(context, ICONS_LIST)
+        dialogIconAdapter = IconsRecyclerAdapter(context, ICONS_LIST)
         recyclerDialogIcon.adapter = dialogIconAdapter
         return inflater
     }
@@ -98,5 +80,5 @@ class ChooseIconDialogFragment() : DialogFragment() {
             MyIcon(R.drawable.ic_edit_pencil, "Default9"),
             MyIcon(R.drawable.ic_wishlist, "Default10")
         )
-    }
+    }*/
 }

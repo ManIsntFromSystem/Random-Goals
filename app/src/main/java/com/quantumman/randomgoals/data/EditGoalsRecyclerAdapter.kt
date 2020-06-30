@@ -34,9 +34,6 @@ class ItemsGoalAdapters(private val context: Context, goals: Array<Goal>) :
 
     override fun onBindViewHolder(holder: ItemsGoalViewHolder, position: Int) {
         val currentGoal = listGoals[position]
-        //saved for future
-        //val imageResource: Int = context.resources
-        //    .getIdentifier("icon", "drawable", context.packageName)
         holder.nameItemGoalTxt.text = currentGoal.nameGoal
         holder.deleteItemGoalBtn.setOnClickListener { removeItem(position) }
     }
@@ -48,10 +45,9 @@ class ItemsGoalAdapters(private val context: Context, goals: Array<Goal>) :
 
     private fun removeItem(position: Int) {
         val uri: Uri = ContentUris.withAppendedId(CONTENT_URI_GOAL, listGoals[position].id.toLong())
+        GoalDBOpenHelper(context).delListGoalsByListName(uri, null, null)
         listGoals.removeAt(position)
         notifyItemRemoved(position)
         notifyItemRangeChanged(position, itemCount)
-        GoalDBOpenHelper(context)
-            .delListGoalsByListName(uri, null, null)
     }
 }

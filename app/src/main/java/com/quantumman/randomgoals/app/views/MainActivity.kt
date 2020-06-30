@@ -34,7 +34,7 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
     private lateinit var goalListNames: List<String>
     private lateinit var selectedGoalsList: List<Goal>
     private lateinit var content: GoalsContentProvider
-    private lateinit var mapGoalsForRandom: MutableMap<String, String>
+    private lateinit var mapGoalsForRandom: MutableMap<String, Int>
     private var point: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -78,7 +78,7 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
             while (cursor.moveToNext()) {
                 val itemListId = cursor.getInt(cursor.getColumnIndex(ID_LIST))
                 val itemListName = cursor.getString(cursor.getColumnIndex(COLUMN_NAME_LIST))
-                val itemListIcon = cursor.getString(cursor.getColumnIndex(COLUMN_ICON_GOAL))
+                val itemListIcon = cursor.getInt(cursor.getColumnIndex(COLUMN_ICON_GOAL))
                 initialListOfLists.plusAssign(
                     ListNames(
                         itemListId,
@@ -143,9 +143,9 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
 
     fun getRandomGoal(view: View) = if (mapGoalsForRandom.isNotEmpty()){
         val randomGoal = mapGoalsForRandom.keys.shuffled().first()
-        val imageResource = this.resources
-            .getIdentifier(mapGoalsForRandom[randomGoal], "drawable", this.packageName)
-        iconChosenGoalImg.setImageResource(imageResource)
+//        val imageResource = this.resources
+//            .getIdentifier(mapGoalsForRandom[randomGoal], "drawable", this.packageName)
+        iconChosenGoalImg.setImageResource(mapGoalsForRandom[randomGoal]!!)
         nameChosenGoalTextView.text = randomGoal
         startedRandomGoalImg.visibility = View.INVISIBLE
         relativeChosenGoal.visibility = View.VISIBLE

@@ -1,19 +1,20 @@
 package com.quantumman.randomgoals.data
 
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.quantumman.randomgoals.R
+import com.quantumman.randomgoals.app.model.ListNames
 
 
-class GoalsListAdapter(private val context: Context,
-                       private val goals: List<String>,
-                       onGoalListener: OnGoalListener) :
-    RecyclerView.Adapter<GoalsListAdapter.GoalsListViewHolder>() {
+class ListGoalsRecyclerAdapter(private val context: Context,
+                               private val goals: List<ListNames>,
+                               onGoalListener: OnGoalListener) :
+    RecyclerView.Adapter<ListGoalsRecyclerAdapter.GoalsListViewHolder>() {
     private val mOnGoalListener: OnGoalListener = onGoalListener
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GoalsListViewHolder {
@@ -26,15 +27,16 @@ class GoalsListAdapter(private val context: Context,
     override fun getItemCount() = goals.size
 
     override fun onBindViewHolder(holder: GoalsListViewHolder, position: Int) {
-        holder.tvNameListGoal.text = goals.elementAt(position)
+        holder.iconItemGoalsList.setImageResource(goals[position].listIcon)
+        holder.tvNameListGoal.text = goals[position].nameList
     }
 
     inner class GoalsListViewHolder(itemView: View, onGoalListener: OnGoalListener) :
         RecyclerView.ViewHolder(itemView), View.OnClickListener {
+        var iconItemGoalsList: ImageView = itemView.findViewById(R.id.iconItemGoalsList)
         var tvNameListGoal: TextView = itemView.findViewById(R.id.tvNameListGoal)
         private var mOnGoalListener: OnGoalListener = onGoalListener
         override fun onClick(view: View) {
-            println("Adapter position: $adapterPosition")
             mOnGoalListener.onGoalClick(adapterPosition)
         }
 

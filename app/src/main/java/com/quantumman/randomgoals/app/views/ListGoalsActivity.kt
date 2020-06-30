@@ -23,7 +23,7 @@ import com.quantumman.randomgoals.data.helpers.GoalDBOpenHelper
 import com.quantumman.randomgoals.util.VerticalSpacingItemDecorator
 import kotlinx.android.synthetic.main.activity_list_goals.*
 
-class ListGoalsActivity : AppCompatActivity(), GoalsListAdapter.OnGoalListener {
+class ListGoalsActivity : AppCompatActivity(), ListGoalsRecyclerAdapter.OnGoalListener {
     private lateinit var recyclerViewEditGoals: RecyclerView
     private lateinit var addNewGoalFltActBtn: FloatingActionButton
     private lateinit var goalsContent: GoalsContentProvider
@@ -45,7 +45,7 @@ class ListGoalsActivity : AppCompatActivity(), GoalsListAdapter.OnGoalListener {
         initRecycler()
     }
     private fun initRecycler() {
-        val mAdapter = GoalsListAdapter(this, listAllNames, this)
+        val mAdapter = ListGoalsRecyclerAdapter(this, listNamesGoals, this)
         recyclerViewEditGoals.apply {
             layoutManager = LinearLayoutManager(context)
             hasFixedSize()
@@ -71,7 +71,7 @@ class ListGoalsActivity : AppCompatActivity(), GoalsListAdapter.OnGoalListener {
             while (cursor.moveToNext()) {
                 val itemListId = cursor.getInt(cursor.getColumnIndex(ID_LIST))
                 val itemListName = cursor.getString(cursor.getColumnIndex(COLUMN_NAME_LIST))
-                val itemListIcon = cursor.getString(cursor.getColumnIndex(COLUMN_ICON_GOAL))
+                val itemListIcon = cursor.getInt(cursor.getColumnIndex(COLUMN_ICON_GOAL))
                 listNamesGoals.plusAssign(
                     ListNames(
                         itemListId,
@@ -124,8 +124,7 @@ class ListGoalsActivity : AppCompatActivity(), GoalsListAdapter.OnGoalListener {
 
     override fun onGoalClick(position: Int) {
         val intent = Intent(this, EditItemsListActivity::class.java)
-        intent.putExtra("list_name", listAllNames[position])
-        intent.putExtra("list_id", position + 1)
+        intent.putExtra("currentObjListName", listNamesGoals[position])
         startActivity(intent)
     }
 }

@@ -17,8 +17,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:layout_marginBottom="24dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="20dp"
             android:layout_marginStart="12dp"
             android:layout_marginEnd="12dp"
             android:orientation="vertical">
@@ -36,18 +36,16 @@
                     android:hint="@string/hint_list_name"
                     android:inputType="text" />
                 <ImageView
-                    android:id="@+id/iconNewItemImageView"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
+                    android:id="@+id/ivCurrentIconList"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
                     android:layout_centerInParent="true"
                     android:layout_marginStart = "22dp"
                     android:clickable="true"
                     android:focusable="true"
                     android:onClick="ivChooseIconForListGoals"
                     android:layout_toEndOf="@+id/etNameListGoals"
-                    android:contentDescription="@string/desc_icon_new_item_goal"
-                    android:src="@drawable/ic_purpose"
-                    android:tag="ic_purpose"/>
+                    android:contentDescription="@string/desc_icon_new_item_goal"/>
 
             </RelativeLayout>
 
@@ -56,7 +54,7 @@
                 android:layout_height="wrap_content">
 
                 <EditText
-                    android:id="@+id/nameNewItemEditText"
+                    android:id="@+id/etNameNewGoal"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_toStartOf="@+id/addNewItemToListImgBtn"
@@ -75,13 +73,13 @@
                     android:layout_alignParentEnd="true"
                     android:layout_centerInParent="true"
                     android:layout_margin="3dp"
-                    android:elevation="6dp"
                     android:clickable="true"
                     android:focusable="true"
-                    android:onClick="addNewItemGoalToDB"
-                    android:backgroundTint="@android:color/holo_blue_light"
-                    app:fabSize="normal"
+                    android:elevation="6dp"
                     app:borderWidth="0dp"
+                    app:fabSize="normal"
+                    android:backgroundTint="@android:color/holo_blue_light"
+                    android:onClick="addNewItemGoalToDB"
                     app:srcCompat="@drawable/add_6" />
             </RelativeLayout>
         </LinearLayout>
