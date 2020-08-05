@@ -1,4 +1,4 @@
-package com.quantumman.randomgoals.data
+package com.quantumman.randomgoals.data.adapters
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -8,12 +8,13 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.quantumman.randomgoals.R
-import com.quantumman.randomgoals.app.model.ListNames
+import com.quantumman.randomgoals.app.model.GoalListNames
 
 
 class ListGoalsRecyclerAdapter(private val context: Context,
-                               private val goals: List<ListNames>,
-                               onGoalListener: OnGoalListener) :
+                               private val goals: List<GoalListNames>,
+                               onGoalListener: OnGoalListener
+) :
     RecyclerView.Adapter<ListGoalsRecyclerAdapter.GoalsListViewHolder>() {
     private val mOnGoalListener: OnGoalListener = onGoalListener
 

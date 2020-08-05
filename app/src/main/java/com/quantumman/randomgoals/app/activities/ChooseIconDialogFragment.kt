@@ -1,4 +1,4 @@
-package com.quantumman.randomgoals.app.views
+package com.quantumman.randomgoals.app.activities
 
 import androidx.fragment.app.DialogFragment
 

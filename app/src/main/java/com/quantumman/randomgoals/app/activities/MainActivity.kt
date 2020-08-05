@@ -1,11 +1,16 @@
-package com.quantumman.randomgoals.app.views
+package com.quantumman.randomgoals.app.activities
 
+import android.app.ActivityOptions
 import android.content.Intent
 import android.os.Bundle
+import android.transition.Explode
 import android.view.View
+import android.view.Window
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import com.google.android.material.snackbar.Snackbar
+import com.google.android.material.textview.MaterialTextView
 import com.quantumman.randomgoals.R
 import com.quantumman.randomgoals.data.GoalsContentProvider
 import com.quantumman.randomgoals.data.helpers.GoalsContract.GoalsListEntry.COLUMN_ICON_GOAL
@@ -17,28 +22,28 @@ import com.quantumman.randomgoals.data.helpers.GoalsContract.ItemGoalEntry.COLUM
 import com.quantumman.randomgoals.data.helpers.GoalsContract.ItemGoalEntry.CONTENT_URI_GOAL
 import com.quantumman.randomgoals.data.helpers.GoalsContract.ItemGoalEntry.ID_GOAL
 import com.quantumman.randomgoals.app.model.Goal
-import com.quantumman.randomgoals.app.model.ListNames
+import com.quantumman.randomgoals.app.model.GoalListNames
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
 
     private lateinit var fabEditGoalBtnMain: ImageView
-    private lateinit var playRandomImgBtn: ImageView
+    private lateinit var playRandomImgBtn: ExtendedFloatingActionButton
     private lateinit var iconChosenGoalImg: ImageView
     private lateinit var startedRandomGoalImg: ImageView
     private lateinit var nameChosenGoalTextView: TextView
     private lateinit var relativeChosenGoal: RelativeLayout
     private lateinit var spinnerListsGoals: Spinner
-    private lateinit var initialListOfLists: MutableList<ListNames>
+    private lateinit var initialListOfGoalLists: MutableList<GoalListNames>
     private lateinit var initialListOfGoals: MutableList<Goal>
     private lateinit var goalListNames: List<String>
     private lateinit var selectedGoalsList: List<Goal>
-    private lateinit var content: GoalsContentProvider
     private lateinit var mapGoalsForRandom: MutableMap<String, Int>
     private var point: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        window.requestFeature(Window.FEATURE_CONTENT_TRANSITIONS)
         setContentView(R.layout.activity_main)
 
         fabEditGoalBtnMain = findViewById(R.id.fabEditGoalBtnMain)
@@ -49,8 +54,7 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
         relativeChosenGoal = findViewById(R.id.relativeChosenGoal)
         spinnerListsGoals = findViewById(R.id.spinnerListsGoals)
         spinnerListsGoals.onItemSelectedListener = this
-        content = GoalsContentProvider()
-        initialListOfLists = mutableListOf()
+        initialListOfGoalLists = mutableListOf()
         initialListOfGoals = mutableListOf()
         mapGoalsForRandom = mutableMapOf()
         updateAllData()
@@ -62,7 +66,7 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
 
         if (this::goalListNames.isInitialized && goalListNames.isNotEmpty())
             goalListNames.toMutableList().clear()
-        goalListNames = initialListOfLists.map { it.nameList }
+        goalListNames = initialListOfGoalLists.map { it.nameList }
         ArrayAdapter(this, android.R.layout.simple_spinner_item, goalListNames)
             .also { adapter ->
                 adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
@@ -71,7 +75,7 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
     }
 
     private fun initLists() {
-        if (initialListOfLists.isNotEmpty()) initialListOfLists.clear()
+        if (initialListOfGoalLists.isNotEmpty()) initialListOfGoalLists.clear()
         val cursor =  contentResolver.query(CONTENT_URI_LIST,null,
             null, null, null)
         if (cursor != null) {
@@ -79,8 +83,8 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
                 val itemListId = cursor.getInt(cursor.getColumnIndex(ID_LIST))
                 val itemListName = cursor.getString(cursor.getColumnIndex(COLUMN_NAME_LIST))
                 val itemListIcon = cursor.getInt(cursor.getColumnIndex(COLUMN_ICON_GOAL))
-                initialListOfLists.plusAssign(
-                    ListNames(
+                initialListOfGoalLists.plusAssign(
+                    GoalListNames(
                         itemListId,
                         itemListName,
                         itemListIcon
@@ -100,8 +104,10 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
     }
 
     fun editGoalsFab(view: View) {
+        window.exitTransition = Explode()
+        val options = ActivityOptions.makeSceneTransitionAnimation(this).toBundle()
         val intent = Intent(this, ListGoalsActivity::class.java)
-        startActivity(intent)
+        startActivity(intent, options)
     }
 
     override fun onNothingSelected(parent: AdapterView<*>?) {
@@ -137,17 +143,15 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
             mapGoalsForRandom.clear()
         selectedGoalsList = initialListOfGoals.filter { it.goalListNames == position + 1}
         selectedGoalsList.forEach {
-            mapGoalsForRandom[it.nameGoal] = initialListOfLists[position].listIcon
+            mapGoalsForRandom[it.nameGoal] = initialListOfGoalLists[position].listIcon
         }
     }
 
     fun getRandomGoal(view: View) = if (mapGoalsForRandom.isNotEmpty()){
         val randomGoal = mapGoalsForRandom.keys.shuffled().first()
-//        val imageResource = this.resources
-//            .getIdentifier(mapGoalsForRandom[randomGoal], "drawable", this.packageName)
         iconChosenGoalImg.setImageResource(mapGoalsForRandom[randomGoal]!!)
         nameChosenGoalTextView.text = randomGoal
-        startedRandomGoalImg.visibility = View.INVISIBLE
+        startedRandomGoalImg.visibility = View.GONE
         relativeChosenGoal.visibility = View.VISIBLE
     } else Snackbar.make(snack_activity_main, "Add several goals", Snackbar.LENGTH_LONG).show()
 

@@ -5,7 +5,7 @@
     android:id="@+id/act_list_goals"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".app.views.ListGoalsActivity">
+    tools:context=".app.activities.ListGoalsActivity">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewListGoals"
@@ -21,8 +21,8 @@
         android:layout_alignParentEnd="true"
         android:layout_marginBottom="32dp"
         android:layout_marginEnd="32dp"
-        android:clickable="true"
-        android:focusable="true"
         android:onClick="addNewListGoalsFloatBtn"
+        android:backgroundTint="@color/colorPrimaryDark_12"
+        app:maxImageSize="32dp"
         app:srcCompat="@drawable/add_1"/>
 </RelativeLayout>

@@ -1,4 +1,4 @@
-package com.quantumman.randomgoals.util
+package com.quantumman.randomgoals.data.helpers
 
 import android.content.Context
 import android.util.Log

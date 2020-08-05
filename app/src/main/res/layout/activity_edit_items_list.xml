@@ -5,7 +5,7 @@
     android:id="@+id/rootLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".app.views.EditItemsListActivity">
+    tools:context=".app.activities.EditItemsListActivity">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/editCardView"
@@ -17,54 +17,67 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="20dp"
             android:layout_marginStart="12dp"
+            android:layout_marginTop="16dp"
             android:layout_marginEnd="12dp"
+            android:layout_marginBottom="20dp"
             android:orientation="vertical">
 
             <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
 
-                <EditText
-                    android:id="@+id/etNameListGoals"
-                    android:layout_width="180dp"
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/textILNameListGoals"
+                    style="@style/Widget.MyTextInputLayout"
+                    android:layout_width="200dp"
                     android:layout_height="wrap_content"
-                    android:autofillHints="@string/hint_list_name"
-                    android:textSize="22sp"
-                    android:hint="@string/hint_list_name"
-                    android:inputType="text" />
+                    android:hint="@string/hint_list_name">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/textIETNameListGoals"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:maxLines="1" />
+                </com.google.android.material.textfield.TextInputLayout>
+
                 <ImageView
                     android:id="@+id/ivCurrentIconList"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:layout_centerInParent="true"
-                    android:layout_marginStart = "22dp"
+                    android:layout_marginStart="22dp"
+                    android:layout_toEndOf="@+id/textILNameListGoals"
                     android:clickable="true"
+                    android:contentDescription="@string/desc_icon_new_item_goal"
                     android:focusable="true"
                     android:onClick="ivChooseIconForListGoals"
-                    android:layout_toEndOf="@+id/etNameListGoals"
-                    android:contentDescription="@string/desc_icon_new_item_goal"/>
+                    android:src="@drawable/ic_purpose" />
 
             </RelativeLayout>
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp">
 
-                <EditText
-                    android:id="@+id/etNameNewGoal"
-                    android:layout_width="wrap_content"
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/textILNameNewGoal"
+                    style="@style/Widget.MyTextInputLayout"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_toStartOf="@+id/addNewItemToListImgBtn"
-                    android:layout_marginEnd="75dp"
+                    android:hint="@string/hint_item_list_name"
                     android:layout_alignParentStart="true"
                     android:layout_centerInParent="true"
-                    android:textSize="22sp"
-                    android:autofillHints="@string/hint_item_list_name"
-                    android:hint="@string/hint_item_list_name"
-                    android:inputType="text" />
+                    android:layout_marginEnd="50dp">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/textIETNameNewGoal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:maxLines="1" />
+                </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.floatingactionbutton.FloatingActionButton
                     android:id="@+id/addNewItemToListImgBtn"
@@ -72,15 +85,13 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:layout_centerInParent="true"
-                    android:layout_margin="3dp"
+                    android:layout_marginEnd="8dp"
                     android:clickable="true"
                     android:focusable="true"
-                    android:elevation="6dp"
-                    app:borderWidth="0dp"
-                    app:fabSize="normal"
-                    android:backgroundTint="@android:color/holo_blue_light"
                     android:onClick="addNewItemGoalToDB"
-                    app:srcCompat="@drawable/add_6" />
+                    app:backgroundTint="@color/orange_primary"
+                    app:maxImageSize="32dp"
+                    app:srcCompat="@drawable/add_1" />
             </RelativeLayout>
         </LinearLayout>
     </androidx.cardview.widget.CardView>

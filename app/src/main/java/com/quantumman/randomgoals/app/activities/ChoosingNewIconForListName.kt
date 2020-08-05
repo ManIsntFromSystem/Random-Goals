@@ -1,4 +1,4 @@
-package com.quantumman.randomgoals.app.views
+package com.quantumman.randomgoals.app.activities
 
 import android.content.Intent
 import android.os.Bundle
@@ -9,44 +9,47 @@ import androidx.recyclerview.widget.RecyclerView
 import com.quantumman.randomgoals.R
 import com.quantumman.randomgoals.app.model.IconsGoals.ICONS_LIST
 import com.quantumman.randomgoals.app.model.MyIcon
-import com.quantumman.randomgoals.data.IconsRecyclerAdapter
+import com.quantumman.randomgoals.data.adapters.IconsRecyclerAdapter
 
 
 class ChoosingNewIconForListName : AppCompatActivity(), IconsRecyclerAdapter.OnIconClickListener {
 
     private lateinit var recyclerDialogIcon: RecyclerView
-    private var intentCurrentIdIcon = -1
-    private var selectedIdIcon = -1
+    private lateinit var selectedIcon: MyIcon
+    private var selectedIconPosition: Int = 0
+    private var intentCurrentIcon:Int = -1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_choosing_new_icon_for_list_name)
         if (intent != null){
-            intentCurrentIdIcon = intent.getIntExtra("currentIconName", R.drawable.ic_purpose)
-            selectedIdIcon = intentCurrentIdIcon
+            intentCurrentIcon = intent.getIntExtra("currentIconName", R.drawable.ic_purpose)
+            selectedIcon = ICONS_LIST.first { it.iconName == intentCurrentIcon }
         }
-        println("Intent for Edit: $intentCurrentIdIcon")
-        println("Drawable: ${R.drawable.ic_purpose}")
+        selectedIconPosition = ICONS_LIST.indexOf(selectedIcon)
         createRecycler()
     }
 
     fun onSaveNewIcon(view: View) {
-        println("Intent Icon: $intentCurrentIdIcon")
-        println("Selected Icon: $selectedIdIcon")
-        if (intentCurrentIdIcon != selectedIdIcon) {
+        println("Intent Icon: $intentCurrentIcon")
+        println("Selected Icon: $selectedIcon")
+        val name = selectedIcon.iconName
+        if (intentCurrentIcon != name) {
             val intent = Intent()
-            intent.putExtra("selectedIconName", selectedIdIcon)
+            intent.putExtra("selectedIconName", name)
             setResult(RESULT_OK, intent)
         }
-        finish()
+        finishAfterTransition()
     }
 
     private fun createRecycler() {
         recyclerDialogIcon = findViewById(R.id.recyclerAllIcons)
+        val list = ICONS_LIST.toMutableList()
         val dialogIconAdapter =
             IconsRecyclerAdapter(
                 this,
-                ICONS_LIST,
+                list,
+                selectedIcon,
                 this
             )
         val layout = GridLayoutManager(this, 4)
@@ -58,8 +61,6 @@ class ChoosingNewIconForListName : AppCompatActivity(), IconsRecyclerAdapter.OnI
     }
 
     override fun onIconChanged(icon: MyIcon?, position: Int) {
-        selectedIdIcon = ICONS_LIST[position].iconName
-        println("Override OnSelectedIcon: $icon")
-        println("Override OnSelectedIcon: ${ICONS_LIST[position]}")
+        selectedIcon = icon!!
     }
 }

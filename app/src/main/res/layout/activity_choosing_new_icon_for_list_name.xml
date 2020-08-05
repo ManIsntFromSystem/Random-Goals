@@ -25,9 +25,7 @@
         android:layout_marginBottom="16dp"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:text="save"
-        android:theme="@style/AppTheme"
+        style="@style/Widget.MyExtendFABStyle"
         android:onClick="onSaveNewIcon"
-        android:clickable="true"
-        android:focusable="true" />
+        android:text="save"/>
 </RelativeLayout>

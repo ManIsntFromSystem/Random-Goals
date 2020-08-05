@@ -19,7 +19,8 @@ import com.quantumman.randomgoals.data.helpers.GoalsContract.GoalsListEntry.ID_L
 import com.quantumman.randomgoals.data.helpers.GoalsContract.GoalsListEntry.COLUMN_NAME_LIST
 import com.quantumman.randomgoals.data.helpers.GoalsContract.GoalsListEntry.COLUMN_ICON_GOAL
 import com.quantumman.randomgoals.app.model.Goal
-import com.quantumman.randomgoals.app.model.ListNames
+import com.quantumman.randomgoals.app.model.GoalListNames
+import com.quantumman.randomgoals.data.helpers.GoalsContract.PATH_LIST
 
 class GoalDBOpenHelper internal constructor(context: Context?) :
     SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
@@ -40,8 +41,8 @@ class GoalDBOpenHelper internal constructor(context: Context?) :
     }
 
     @SuppressLint("Recycle")
-    fun queryLists(id: Int?, inputName: String?): List<ListNames> {
-        val itemsGoalList: MutableList<ListNames> = mutableListOf()
+    fun queryLists(id: Int?, inputName: String?): List<GoalListNames> {
+        val itemsGoalGoalList: MutableList<GoalListNames> = mutableListOf()
         val selectQuery = when {
             id != null -> "SELECT * FROM $TABLE_NAME_LIST WHERE $ID_LIST = ?"
             inputName != null -> "SELECT * FROM $TABLE_NAME_LIST WHERE $COLUMN_NAME_LIST = ?"
@@ -61,15 +62,10 @@ class GoalDBOpenHelper internal constructor(context: Context?) :
             val gid = cursor.getInt(indexId)
             val name = cursor.getString(indexName)
             val icon = cursor.getInt(indexIcon)
-            val listNames =
-                ListNames(
-                    gid,
-                    name,
-                    icon
-                )
-            itemsGoalList.add(listNames)
+            val listNames = GoalListNames(gid, name, icon)
+            itemsGoalGoalList.add(listNames)
         }
-        return itemsGoalList.toList()
+        return itemsGoalGoalList.toList()
     }
 
     @SuppressLint("Recycle")
@@ -92,26 +88,27 @@ class GoalDBOpenHelper internal constructor(context: Context?) :
             val gid = cursor.getInt(indexId)
             val name = cursor.getString(indexList)
             val list = cursor.getInt(indexGoal)
-            val goal =
-                Goal(gid, name, list)
+            val goal = Goal(gid, name, list)
             itemsGoalList.add(goal)
         }
         return itemsGoalList.toList()
     }
 
     @SuppressLint("Recycle")
-    fun delListGoalsByListName(uri: Uri, mSelection: String?, mSelectionArgs: Array<String>?): Int {
+    fun delListGoalsByListName(uri: Uri, selection: String?, selectionArgs: Array<String>?): Int {
         val db = writableDatabase
         val rowsDeleted = when (uriMatcher.match(uri)) {
-            MATCHER_WHOLE_TABLE -> db.delete(TABLE_NAME_GOAL, mSelection, mSelectionArgs)
+            MATCHER_ALL_GOALS -> db.delete(TABLE_NAME_GOAL, selection, selectionArgs)
             MATCHER_GOAL -> {
-                if (mSelection != null && mSelectionArgs != null) {
+                    val mSelection = "$ID_GOAL=?"
+                    val mSelectionArgs = arrayOf(ContentUris.parseId(uri).toString())
                     db.delete(TABLE_NAME_GOAL, mSelection, mSelectionArgs)
-                } else {
-                    val selection = "$ID_GOAL=?"
-                    val selectionArgs = arrayOf(ContentUris.parseId(uri).toString())
-                    db.delete(TABLE_NAME_GOAL, selection, selectionArgs)
-                }
+            }
+            MATCHER_ALL_LIST -> db.delete(TABLE_NAME_LIST, selection, selectionArgs)
+            MATCHER_LIST -> {
+                val mSelection = "$ID_LIST=?"
+                val mSelectionArgs = arrayOf(ContentUris.parseId(uri).toString())
+                db.delete(TABLE_NAME_LIST, mSelection, mSelectionArgs)
             }
             else -> throw IllegalArgumentException("Can't delete incorrect URI: $uri")
         }
@@ -134,16 +131,16 @@ class GoalDBOpenHelper internal constructor(context: Context?) :
                 "$COLUMN_ICON_GOAL INTEGER)")
         private const val SQL_DELETE_LISTS = "DROP TABLE IF EXISTS $TABLE_NAME_GOAL"
 
-        private const val MATCHER_WHOLE_TABLE = 333
-        private const val MATCHER_GOAL = 777
+        private const val MATCHER_ALL_GOALS = 110
+        private const val MATCHER_GOAL = 120
+        private const val MATCHER_ALL_LIST = 210
+        private const val MATCHER_LIST = 220
 
         private val uriMatcher = UriMatcher(UriMatcher.NO_MATCH).apply {
-            addURI(AUTHORITY, PATH_GOAL,
-                MATCHER_WHOLE_TABLE
-            )
-            addURI(AUTHORITY,"${PATH_GOAL}/#",
-                MATCHER_GOAL
-            )
+            addURI(AUTHORITY, PATH_GOAL, MATCHER_ALL_GOALS)
+            addURI(AUTHORITY,"${PATH_GOAL}/#", MATCHER_GOAL)
+            addURI(AUTHORITY, PATH_LIST, MATCHER_ALL_LIST)
+            addURI(AUTHORITY,"${PATH_LIST}/#", MATCHER_LIST)
         }
     }
 }

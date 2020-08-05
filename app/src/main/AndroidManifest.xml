@@ -10,9 +10,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".app.views.ChoosingNewIconForListName"></activity>
+        <activity android:name=".app.activities.ChoosingNewIconForListName" />
         <activity
-            android:name=".app.views.MainActivity"
+            android:name=".app.activities.MainActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -21,16 +21,16 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".app.views.EditItemsListActivity"
+            android:name=".app.activities.EditItemsListActivity"
             android:label="Edit Goals"
-            android:parentActivityName=".app.views.ListGoalsActivity"
+            android:parentActivityName=".app.activities.ListGoalsActivity"
             android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".app.views.ListGoalsActivity" />
+                android:value=".app.activities.ListGoalsActivity" />
         </activity>
         <activity
-            android:name=".app.views.ListGoalsActivity"
+            android:name=".app.activities.ListGoalsActivity"
             android:screenOrientation="portrait" />
 
         <provider

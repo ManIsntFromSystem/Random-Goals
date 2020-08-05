@@ -9,24 +9,26 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
         <ImageView
             android:id="@+id/iconChosenGoalImg"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/margin_for_icon_in_dialog"
             android:layout_alignParentTop="true"
+            android:layout_margin="@dimen/margin_for_icon_in_dialog"
             android:contentDescription="@string/desc_icon_for_gaols"
             android:src="@drawable/ic_purpose" />
+
         <TextView
             android:id="@+id/nameChosenGoalTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
             android:layout_marginStart="16dp"
-            android:textSize="24sp"
-            android:textColor="@color/colorAccentDark_12"
-            android:text="@string/choose_goal_icon"
             android:layout_toEndOf="@+id/iconChosenGoalImg"
-            android:layout_centerInParent="true" />
+            android:text="@string/choose_goal_icon"
+            android:textColor="@color/colorAccentDark_12"
+            android:textSize="24sp" />
     </RelativeLayout>
 
     <androidx.recyclerview.widget.RecyclerView
@@ -36,4 +38,31 @@
         android:layout_gravity="center"
         android:paddingTop="8dp"
         app:layout_constraintHeight_default="wrap" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:padding="8dp">
+
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            android:id="@+id/meBtnSave"
+            android:layout_width="100dp"
+            android:layout_height="48dp"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="16dp"
+            style="@style/Widget.MyExtendFABStyle"
+            android:gravity="center_horizontal"
+            android:text="@string/save"/>
+
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            android:id="@+id/meBtnCancel"
+            android:layout_width="120dp"
+            android:layout_height="48dp"
+            android:layout_toStartOf="@+id/meBtnSave"
+            style="@style/Widget.MyExtendFABStyle"
+            android:layout_marginEnd="16dp"
+            android:gravity="center_horizontal"
+            android:text="@string/cancel"/>
+    </RelativeLayout>
 </LinearLayout>
