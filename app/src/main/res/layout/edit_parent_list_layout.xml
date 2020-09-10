@@ -5,7 +5,7 @@
     android:id="@+id/rootLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".app.ui.activities.EditItemsListActivity">
+    tools:context=".app.ui.fragments.EditParentListFragment">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/editCardView"
@@ -51,7 +51,6 @@
                     android:clickable="true"
                     android:contentDescription="@string/desc_icon_new_item_goal"
                     android:focusable="true"
-                    android:onClick="ivChooseIconForListGoals"
                     android:src="@drawable/ic_purpose" />
 
             </RelativeLayout>
@@ -88,7 +87,6 @@
                     android:layout_marginEnd="8dp"
                     android:clickable="true"
                     android:focusable="true"
-                    android:onClick="addNewItemGoalToDB"
                     app:backgroundTint="@color/orange_primary"
                     app:maxImageSize="32dp"
                     app:srcCompat="@drawable/add_1" />

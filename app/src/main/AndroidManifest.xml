@@ -3,6 +3,7 @@
     package="com.quantumman.randomgoals">
 
     <application
+        android:name=".App"
         android:allowBackup="true"
         android:fullBackupContent="@xml/backup_descriptor"
         android:icon="@mipmap/ic_launcher"
@@ -10,9 +11,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".app.activities.ChoosingNewIconForListName" />
+        <activity android:name="com.quantumman.randomgoals.app.ui.activities.ChoosingNewIconForListName" />
         <activity
-            android:name=".app.activities.MainActivity"
+            android:name="com.quantumman.randomgoals.app.ui.activities.MainActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -21,20 +22,20 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".app.activities.EditItemsListActivity"
+            android:name="com.quantumman.randomgoals.app.ui.activities.EditItemsListActivity"
             android:label="Edit Goals"
-            android:parentActivityName=".app.activities.ListGoalsActivity"
+            android:parentActivityName="com.quantumman.randomgoals.app.ui.activities.ListGoalsActivity"
             android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".app.activities.ListGoalsActivity" />
+                android:value="com.quantumman.randomgoals.app.ui.activities.ListGoalsActivity" />
         </activity>
         <activity
-            android:name=".app.activities.ListGoalsActivity"
+            android:name="com.quantumman.randomgoals.app.ui.activities.ListGoalsActivity"
             android:screenOrientation="portrait" />
 
         <provider
-            android:name=".data.GoalsContentProvider"
+            android:name=".data.providers.GoalsContentProvider"
             android:authorities="com.quantumman.randomgoals"
             android:exported="false" />
     </application>

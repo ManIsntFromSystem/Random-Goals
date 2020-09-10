@@ -1,0 +1,113 @@
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/snack_activity_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".app.ui.fragments.RandomScreenFragment">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="150dp">
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/mtvChooseList"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="16dp"
+                android:text="@string/mtv_choose_list"
+                android:theme="@style/AppTheme" />
+
+            <Spinner
+                android:id="@+id/spinnerListsGoals"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_marginEnd="16dp"
+                android:layout_toStartOf="@+id/ivNavToAllParentLists"
+                android:layout_toEndOf="@+id/mtvChooseList"
+                android:textAlignment="center" />
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/ivNavToAllParentLists"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_alignParentEnd="true"
+                android:layout_centerInParent="true"
+                android:layout_marginEnd="32dp"
+                android:src="@drawable/ic_notepad_2"
+                android:clickable="true"
+                android:focusable="true" />
+        </RelativeLayout>
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardChosenGoal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        app:layout_constraintBottom_toTopOf="@+id/playRandomImgBtn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cardView">
+
+        <RelativeLayout
+            android:id="@+id/relativeChosenGoal"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:visibility="gone">
+
+            <ImageView
+                android:id="@+id/iconChosenGoalImg"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="12dp"
+                android:contentDescription="@string/desc_icon_chosen_goal"
+                android:src="@drawable/ic_purpose" />
+
+            <TextView
+                android:id="@+id/nameChosenGoalTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_below="@+id/iconChosenGoalImg"
+                android:layout_marginTop="8dp"
+                android:gravity="center_horizontal"
+                android:textAlignment="center"
+                android:textSize="20sp" />
+        </RelativeLayout>
+
+        <ImageView
+            android:id="@+id/startedRandomGoalImg"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:contentDescription="@string/desc_started_random_image"
+            android:src="@drawable/ic_brainstorm" />
+    </androidx.cardview.widget.CardView>
+
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/playRandomImgBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="32dp"
+        android:text="Get Goal"
+        style="@style/Widget.MyExtendFABStyle"
+        android:contentDescription="@string/start_random"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

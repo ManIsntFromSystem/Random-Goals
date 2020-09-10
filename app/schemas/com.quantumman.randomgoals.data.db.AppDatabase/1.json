@@ -1,0 +1,90 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 1,
+    "identityHash": "9739b269bbb35b8da7eae32b7594138f",
+    "entities": [
+      {
+        "tableName": "goals",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`goal_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `goal_date` INTEGER NOT NULL, `goal_name` TEXT NOT NULL, `list_id` INTEGER NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "goalId",
+            "columnName": "goal_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "goalDate",
+            "columnName": "goal_date",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "goalName",
+            "columnName": "goal_name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "listId",
+            "columnName": "list_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "goal_id"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "parent_list",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`parent_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `parent_date` INTEGER NOT NULL, `parent_name` TEXT NOT NULL, `parent_icon` TEXT NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "parentId",
+            "columnName": "parent_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "parentDate",
+            "columnName": "parent_date",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "parentName",
+            "columnName": "parent_name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "parentIcon",
+            "columnName": "parent_icon",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "parent_id"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [],
+        "foreignKeys": []
+      }
+    ],
+    "views": [],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '9739b269bbb35b8da7eae32b7594138f')"
+    ]
+  }
+}
