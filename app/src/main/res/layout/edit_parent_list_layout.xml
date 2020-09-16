@@ -28,7 +28,7 @@
                 android:layout_height="wrap_content">
 
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/textILNameListGoals"
+                    android:id="@+id/textLayoutParentName"
                     style="@style/Widget.MyTextInputLayout"
                     android:layout_width="200dp"
                     android:layout_height="wrap_content"
@@ -42,12 +42,12 @@
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <ImageView
-                    android:id="@+id/ivCurrentIconList"
+                    android:id="@+id/ivEditParentIcon"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:layout_centerInParent="true"
                     android:layout_marginStart="22dp"
-                    android:layout_toEndOf="@+id/textILNameListGoals"
+                    android:layout_toEndOf="@+id/textLayoutParentName"
                     android:clickable="true"
                     android:contentDescription="@string/desc_icon_new_item_goal"
                     android:focusable="true"
@@ -65,7 +65,7 @@
                     style="@style/Widget.MyTextInputLayout"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_toStartOf="@+id/addNewItemToListImgBtn"
+                    android:layout_toStartOf="@+id/fabAddGoalToParentList"
                     android:hint="@string/hint_item_list_name"
                     android:layout_alignParentStart="true"
                     android:layout_centerInParent="true"
@@ -79,7 +79,7 @@
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.floatingactionbutton.FloatingActionButton
-                    android:id="@+id/addNewItemToListImgBtn"
+                    android:id="@+id/fabAddGoalToParentList"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
@@ -98,8 +98,20 @@
         android:id="@+id/recyclerViewEditGoals"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:visibility="visible"
         android:layout_below="@+id/editCardView"
         android:layout_alignBottom="@+id/editCardView"
         android:layout_alignParentBottom="true"
         android:layout_margin="8dp" />
+
+    <ImageView
+        android:id="@+id/ivHolderGoals"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="invisible"
+        android:layout_centerInParent="true"
+        android:layout_alignParentBottom="true"
+        android:layout_below="@+id/editCardView"
+        android:src="@drawable/ic_launcher_background"
+        tools:ignore="ContentDescription" />
 </RelativeLayout>

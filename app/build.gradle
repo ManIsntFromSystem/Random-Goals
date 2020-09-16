@@ -14,6 +14,10 @@ android {
         versionCode 1
         versionName "1.0"
 
+        //to hide the api-key at the GitHub -> we use resource and <meta-data />
+        manifestPlaceholders = [fabric_io_id: "1234567890qwertyuiop1234567890"]
+
+        project.ext.set("archivesBaseName", "RandomGoals-" + defaultConfig.versionName) //set Apk name for compilation
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
         kapt {
@@ -22,6 +26,24 @@ android {
                 arg("room.incremental", "true")
                 arg("room.expandProjection", "true")
             }
+        }
+    }
+
+    buildFeatures {
+        buildConfig = true // Determines whether to generate a BuildConfig class.
+//        viewBinding = false
+//        dataBinding = false
+//        aidl = true // Determines whether to generate binder classes for your AIDL files.
+//        renderScript = true // Determines whether to support RenderScript.
+//        resValues = true  // Determines whether to support injecting custom variables into the module’s R class.
+//        shaders = true   // Determines whether to support shader AOT compilation.
+    }
+
+    splits {
+        density {
+            enable true
+            exclude "ldpi", "xxhdpi", "xxxhdpi"
+            compatibleScreens 'small', 'normal', 'large', 'xlarge'
         }
     }
 
@@ -41,13 +63,15 @@ android {
 
     buildTypes {
         release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            minifyEnabled true//get rid of not unused resources and libs(include Google Play Services)
+            shrinkResources true//compress final size of apk
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'//base ProGuard rules(R8 Optimizer)
         }
     }
 
+    //point Gradle which dirs it must use
     sourceSets {
-        main.java.srcDirs += 'src/main/kotlin'
+        main.java.srcDirs += 'src/main/kotlin' //we can add our own dirs but we have to avoid name conflicts
     }
 
 }
@@ -58,6 +82,7 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
     // Test
+    //these commands wont be at the release version
     testImplementation 'junit:junit:4.13'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
@@ -116,7 +141,6 @@ dependencies {
 
     //  JodaTime for DateTime
     implementation 'net.danlew:android.joda:2.10.6.1'
-
     // Timber
     implementation 'com.jakewharton.timber:timber:4.7.1'
 }

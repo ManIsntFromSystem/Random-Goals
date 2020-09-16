@@ -1,16 +1,16 @@
 package com.quantumman.randomgoals.app.ui.views
 
 import moxy.MvpView
-import moxy.viewstate.strategy.AddToEndSingleStrategy
-import moxy.viewstate.strategy.OneExecutionStateStrategy
-import moxy.viewstate.strategy.StateStrategyType
+import moxy.viewstate.strategy.alias.AddToEndSingle
+import moxy.viewstate.strategy.alias.OneExecution
+import moxy.viewstate.strategy.alias.Skip
 
-@StateStrategyType(value = AddToEndSingleStrategy::class)
+@AddToEndSingle
 interface AllParentListsView : MvpView {
 
-    @StateStrategyType(value = OneExecutionStateStrategy::class)
     fun initShowingData()
-
+    @Skip
     fun showError(message: String)
+    @OneExecution
     fun deleteParentList()
 }

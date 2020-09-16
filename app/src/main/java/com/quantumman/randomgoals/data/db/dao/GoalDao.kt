@@ -1,24 +1,22 @@
 package com.quantumman.randomgoals.data.db.dao
 
 import androidx.room.*
-import com.quantumman.randomgoals.data.model.GoalEntity
-import com.quantumman.randomgoals.helpers.contracts.DataContract.QUERY_GET_ALL_GOALS
+import com.quantumman.randomgoals.data.model.GoalDto
+import com.quantumman.randomgoals.helpers.contracts.DataContract.DELETE_ALL_GOALS
 import io.reactivex.rxjava3.core.Completable
-import io.reactivex.rxjava3.core.Flowable
 import io.reactivex.rxjava3.core.Maybe
 
 @Dao
 interface GoalDao {
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
-    fun insertGoal(goalEntity: GoalEntity): Maybe<Long>
-
-    @Query(QUERY_GET_ALL_GOALS)
-    fun getAllGoalsByParentListId(parentId: Long): Flowable<List<GoalEntity>>
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertGoal(goalDto: GoalDto): Maybe<Long>
 
     @Update(onConflict = OnConflictStrategy.REPLACE)
-    fun updateGoal(goalEntity: GoalEntity): Completable
+    fun updateGoal(goalDto: GoalDto): Completable
+
     @Delete
-    fun deleteGoal(goalEntity: GoalEntity): Completable
-    @Delete()
-    fun deleteAllGoal(goalEntity: List<GoalEntity>): Completable
+    fun deleteGoal(goalDto: GoalDto): Completable
+
+    @Query(DELETE_ALL_GOALS)
+    fun deleteAllGoal(parentId: Long): Completable
 }

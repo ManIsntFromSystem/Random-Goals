@@ -4,6 +4,7 @@ buildscript {
     ext.kotlin_version = '1.4.0'
     repositories {
         google()
+        //special repository storage(it's the place where all legal libs are keep)
         jcenter()
     }
     dependencies {
@@ -22,6 +23,12 @@ allprojects {
         
     }
 }
+
+//increase time cache
+//configurations.all {
+//    resolutionStrategy.cacheChangingModulesFor 48, 'hours'
+//    resolutionStrategy.cacheDynamicVersionsFor 0, 'minutes'
+//}
 
 task clean(type: Delete) {
     delete rootProject.buildDir

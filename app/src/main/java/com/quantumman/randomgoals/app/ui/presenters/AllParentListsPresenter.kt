@@ -27,7 +27,7 @@ class AllParentListsPresenter(private val parentWithGoalsInteractor: ParentWithG
             } )
     }
 
-    fun deleteParentList() { parentWithGoalsInteractor.getParentWithListById(1) }
+    fun deleteParentList() { /*parentWithGoalsInteractor(1)*/ }
 
     fun showData() { viewState.initShowingData() }
 }

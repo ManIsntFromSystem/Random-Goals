@@ -55,8 +55,8 @@ class EditItemsListActivity : AppCompatActivity(), GoalItemsRecyclerAdapter.OnDe
 
         textIETNameListGoals = findViewById(R.id.textIETNameListGoals)
         textIETNameNewGoal = findViewById(R.id.textIETNameNewGoal)
-        ivCurrentIconList = findViewById(R.id.ivCurrentIconList)
-        addNewItemToListImgBtn = findViewById(R.id.addNewItemToListImgBtn)
+        ivCurrentIconList = findViewById(R.id.ivEditParentIcon)
+        addNewItemToListImgBtn = findViewById(R.id.fabAddGoalToParentList)
         recyclerViewEditGoals = findViewById(R.id.recyclerViewEditGoals)
         goalDBHelper = GoalDBOpenHelper(this)
         initData()

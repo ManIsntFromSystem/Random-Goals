@@ -17,27 +17,17 @@
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name="com.quantumman.randomgoals.app.ui.activities.EditItemsListActivity"
-            android:label="Edit Goals"
-            android:parentActivityName="com.quantumman.randomgoals.app.ui.activities.ListGoalsActivity"
-            android:screenOrientation="portrait">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.quantumman.randomgoals.app.ui.activities.ListGoalsActivity" />
-        </activity>
-        <activity
-            android:name="com.quantumman.randomgoals.app.ui.activities.ListGoalsActivity"
-            android:screenOrientation="portrait" />
 
         <provider
             android:name=".data.providers.GoalsContentProvider"
             android:authorities="com.quantumman.randomgoals"
             android:exported="false" />
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="${fabric_io_id}"/>
     </application>
 
 </manifest>

@@ -31,7 +31,7 @@ class MainActivity : AppCompatActivity(), HandleSnackMessage/*AdapterView.OnItem
         supportFragmentManager.beginTransaction()
             .disallowAddToBackStack()
             .replace(R.id.container, fragment, TAG)
-            .commit()
+            .commitAllowingStateLoss()
     }
 
     override fun showSnack(message: String) {
