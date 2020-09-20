@@ -11,7 +11,7 @@ android {
         applicationId "com.quantumman.randomgoals"
         minSdkVersion 21
         targetSdkVersion 30
-        versionCode 1
+        versionCode 2
         versionName "1.0"
 
         //to hide the api-key at the GitHub -> we use resource and <meta-data />
@@ -19,14 +19,14 @@ android {
 
         project.ext.set("archivesBaseName", "RandomGoals-" + defaultConfig.versionName) //set Apk name for compilation
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-
-        kapt {
-            arguments {
-                arg("room.schemaLocation", "$projectDir/schemas".toString())
-                arg("room.incremental", "true")
-                arg("room.expandProjection", "true")
-            }
-        }
+//
+//        kapt {
+//            arguments {
+////                arg("room.schemaLocation", "$projectDir/schemas".toString())
+//                arg("room.incremental", "true")
+//                arg("room.expandProjection", "true")
+//            }
+//        }
     }
 
     buildFeatures {
@@ -111,12 +111,6 @@ dependencies {
     def lifecycleVersion = '2.2.0'
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycleVersion"
     implementation "androidx.lifecycle:lifecycle-common-java8:$lifecycleVersion"
-
-    //  RxBinding
-    def rxBinding = '4.0.0'
-    implementation "com.jakewharton.rxbinding4:rxbinding:$rxBinding"
-    implementation "com.jakewharton.rxbinding4:rxbinding-core:$rxBinding"
-    implementation "com.jakewharton.rxbinding4:rxbinding-appcompat:$rxBinding"
 
     //  Moxy
     def moxyVersion = '2.1.2'

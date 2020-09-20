@@ -1,9 +1,9 @@
 package com.quantumman.randomgoals.app.ui.activities
 
-import androidx.fragment.app.DialogFragment
-
-
-class ChooseIconDialogFragment() : DialogFragment() {
+//import androidx.fragment.app.DialogFragment
+//
+//
+//class ChooseIconDialogFragment() : DialogFragment() {
    /* private lateinit var dialogIconAdapter: IconsRecyclerAdapter
     private lateinit var recyclerDialogIcon: RecyclerView
     private lateinit var layout: RecyclerView.LayoutManager
@@ -81,4 +81,4 @@ class ChooseIconDialogFragment() : DialogFragment() {
             MyIcon(R.drawable.ic_wishlist, "Default10")
         )
     }*/
-}
+//}

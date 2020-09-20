@@ -12,7 +12,7 @@ import com.quantumman.randomgoals.helpers.contracts.DataContract.TABLE_GOAL
     foreignKeys = [ForeignKey(
         entity = ParentListDto::class,
         parentColumns = ["parent_id"],
-        childColumns = ["goal_id"],
+        childColumns = ["parent_list"],
         onDelete = CASCADE
     )]
 )

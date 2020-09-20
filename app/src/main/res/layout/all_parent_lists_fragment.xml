@@ -13,7 +13,7 @@
         android:layout_margin="4dp"/>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/addNewGoalFltActBtn"
+        android:id="@+id/fabAddNewParentWithGoals"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"

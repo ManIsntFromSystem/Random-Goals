@@ -4,30 +4,30 @@
 
     <application
         android:name=".App"
-        android:allowBackup="true"
+        android:allowBackup="false"
         android:fullBackupContent="@xml/backup_descriptor"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name="com.quantumman.randomgoals.app.ui.activities.ChoosingNewIconForListName" />
-        <activity
-            android:name="com.quantumman.randomgoals.app.ui.activities.MainActivity"
+        <activity android:name=".app.ui.activities.SplashActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
+        </activity>
+        <activity android:name=".app.ui.activities.ChoosingNewIconForListName" />
+        <activity
+            android:name=".app.ui.activities.MainActivity"
+            android:screenOrientation="portrait">
         </activity>
 
-        <provider
-            android:name=".data.providers.GoalsContentProvider"
-            android:authorities="com.quantumman.randomgoals"
-            android:exported="false" />
         <meta-data
             android:name="io.fabric.ApiKey"
-            android:value="${fabric_io_id}"/>
+            android:value="${fabric_io_id}" />
     </application>
 
 </manifest>

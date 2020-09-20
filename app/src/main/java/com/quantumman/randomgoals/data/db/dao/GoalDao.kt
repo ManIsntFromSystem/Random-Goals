@@ -9,7 +9,7 @@ import io.reactivex.rxjava3.core.Maybe
 @Dao
 interface GoalDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertGoal(goalDto: GoalDto): Maybe<Long>
+    fun insertGoal(goalDto: GoalDto): Completable
 
     @Update(onConflict = OnConflictStrategy.REPLACE)
     fun updateGoal(goalDto: GoalDto): Completable

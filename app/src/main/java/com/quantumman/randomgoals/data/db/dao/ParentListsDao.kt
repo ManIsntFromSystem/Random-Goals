@@ -7,14 +7,15 @@ import com.quantumman.randomgoals.helpers.contracts.DataContract.QUERY_GET_ALL_N
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Flowable
 import io.reactivex.rxjava3.core.Maybe
+import io.reactivex.rxjava3.core.Single
 
 @Dao
 interface ParentListsDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertParentListGoals(parentList: ParentListDto): Maybe<Long>
+    fun insertParentListGoals(parentList: ParentListDto): Completable
 
     @Query(QUERY_GET_ALL_NAMES_OF_PARENTS)
-    fun getAllParentNames(): Flowable<List<String>>
+    fun getAllParentNames(): Maybe<List<String>>
 
     @Update(onConflict = OnConflictStrategy.REPLACE)
     fun updateParentList(parentList: ParentListDto): Completable

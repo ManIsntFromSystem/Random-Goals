@@ -11,6 +11,7 @@ import com.quantumman.randomgoals.data.model.ParentWithListGoalsDto
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Flowable
 import io.reactivex.rxjava3.core.Maybe
+import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.schedulers.Schedulers
 import timber.log.Timber
 import java.util.concurrent.TimeUnit
@@ -22,27 +23,25 @@ class ParentWithGoalsRepositoryImpl(
 ) : ParentWithGoalsRepository {
 
     // Relation queries
-    override fun getParentWithListById(parentId: Long): Flowable<ParentWithListGoals> =
-        parentWithGoalsListDao.getParentWithList(parentId = parentId)
-            .debounce(300, TimeUnit.MILLISECONDS)
-            .observeOn(Schedulers.computation())
+    override fun getParentWithListByName(parentName: String): Flowable<ParentWithListGoals> =
+        parentWithGoalsListDao.getParentWithList(parentName = parentName)
             .map { mapToParentWithListGoals(it) }
-            .doOnError { Timber.e(it) }
+            .doOnError { Timber.e(it.localizedMessage) }
 
     override fun getAllParentsWithListGoals(): Flowable<List<ParentWithListGoals>> {
         return parentWithGoalsListDao.getAllParentsWithList()
-            .observeOn(Schedulers.computation())
             .flatMap { Flowable.fromIterable(it) }
             .map { mapToParentWithListGoals(it) }
-            .doOnError { Timber.e(it) }
-            .buffer(30)
+            .doOnError { Timber.e(it.localizedMessage) }
+            .buffer(50)
+            .map { it.toList() }
     }
 
     //MARK :  Parents functions
-    override fun insertParentListGoals(parent: ParentWithListGoals): Maybe<Long> =
+    override fun insertParentListGoals(parent: ParentWithListGoals): Completable =
                                 parentListsDao.insertParentListGoals(mapToParentListDto(parent))
 
-    override fun getAllParentNames(): Flowable<List<String>> = parentListsDao.getAllParentNames()
+    override fun getAllParentNames(): Maybe<List<String>> = parentListsDao.getAllParentNames()
 
     override fun updateParentList(parent: ParentWithListGoals): Completable =
                                 parentListsDao.updateParentList(mapToParentListDto(parent))
@@ -53,7 +52,7 @@ class ParentWithGoalsRepositoryImpl(
     override fun deleteAllParentLists(): Completable = parentListsDao.deleteAllParentLists()
 
     //MARK :  Goals functions
-    override fun insertGoal(goal: GoalItem): Maybe<Long> = goalDao.insertGoal(mapToGoalDto(goal))
+    override fun insertGoal(goal: GoalItem): Completable = goalDao.insertGoal(mapToGoalDto(goal))
 
     override fun updateGoal(goal: GoalItem): Completable = goalDao.updateGoal(mapToGoalDto(goal))
 

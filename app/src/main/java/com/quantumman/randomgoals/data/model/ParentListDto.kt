@@ -11,4 +11,4 @@ import com.quantumman.randomgoals.helpers.contracts.DataContract.TABLE_PARENT_LI
 data class ParentListDto (@PrimaryKey(autoGenerate = true) @ColumnInfo(name = "parent_id") val parentId: Long,
                           @ColumnInfo(name = "parent_date") val parentDate: Long,
                           @ColumnInfo(name = "parent_name") val parentName: String,
-                          @ColumnInfo(name = "parent_icon") val parentIcon: String)
+                          @ColumnInfo(name = "parent_icon") val parentIcon: Int)

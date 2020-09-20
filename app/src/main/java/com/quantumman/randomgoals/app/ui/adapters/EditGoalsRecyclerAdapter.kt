@@ -5,47 +5,42 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.quantumman.randomgoals.R
 import com.quantumman.randomgoals.app.model.GoalItem
+import com.quantumman.randomgoals.helpers.enums.RecyclerClickType
+import com.quantumman.randomgoals.helpers.extensions.toEditable
+import com.quantumman.randomgoals.utils.GoalItemDiffCallback
+import kotlinx.android.synthetic.main.item_goal_edit.view.*
 
-class GoalItemsRecyclerAdapter : RecyclerView.Adapter<GoalItemsRecyclerAdapter.ItemsGoalViewHolder>() {
-    private val listGoals: ArrayList<GoalItem> = arrayListOf()
+class GoalItemsAdapter : ListAdapter<GoalItem, GoalItemsAdapter.GoalItemsViewHolder>(GoalItemDiffCallback()) {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemsGoalViewHolder {
+    //transferring the call to the fragment | its not best solution, but work pretty good
+    var onItemClick: ((GoalItem, Int, RecyclerClickType) -> Unit)? = null
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GoalItemsViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_goal_edit, parent, false)
-        return ItemsGoalViewHolder(view)
+        return GoalItemsViewHolder(view)
     }
 
-    override fun getItemCount() = listGoals.size
+    // DiffUtil.ItemCallback in all its beauty
+    override fun onBindViewHolder(holder: GoalItemsViewHolder, position: Int) = holder.bind(getItem(position))
 
-    fun updateData(list: List<GoalItem>) {
-        listGoals.clear()
-        listGoals.addAll(list)
-        notifyDataSetChanged()
-    }
+    inner class GoalItemsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        private val deleteItemGoalBtn: ImageView = itemView.deleteItemGoalBtn
+        private val nameItemGoalTxt: TextView = itemView.nameItemGoalTxt
 
-    override fun onBindViewHolder(holder: ItemsGoalViewHolder, position: Int) {
-        val currentGoal = listGoals[position]
-        holder.nameItemGoalTxt.text = currentGoal.goalName
-        holder.deleteItemGoalBtn.setOnClickListener {
-//            onDelListener.onDeleteListener(position)
-//            removeItem(position)
+        fun bind(goalItem: GoalItem) { nameItemGoalTxt.text = goalItem.goalName.toEditable() }
+
+        //handling View type pressed
+        init {
+            deleteItemGoalBtn.setOnClickListener {
+                onItemClick?.invoke(getItem(adapterPosition), adapterPosition, RecyclerClickType.DELETE)
+            }
+            itemView.setOnClickListener {
+                onItemClick?.invoke(getItem(adapterPosition), adapterPosition, RecyclerClickType.EDIT_NAME)
+            }
         }
-    }
-
-    class ItemsGoalViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        var deleteItemGoalBtn: ImageView = itemView.findViewById(R.id.deleteItemGoalBtn)
-        var nameItemGoalTxt: TextView = itemView.findViewById(R.id.nameItemGoalTxt)
-    }
-
-    interface OnDeleteGoalListener {
-        fun onDeleteListener(position: Int)
-    }
-
-    private fun removeItem(position: Int) {
-        listGoals.removeAt(position)
-        notifyItemRemoved(position)
-        notifyItemRangeChanged(position, itemCount)
     }
 }

@@ -6,6 +6,7 @@ import com.quantumman.randomgoals.R
 import com.quantumman.randomgoals.app.ui.fragments.EditParentListFragment
 import com.quantumman.randomgoals.app.ui.fragments.RandomScreenFragment
 import com.quantumman.randomgoals.helpers.HandleSnackMessage
+import com.quantumman.randomgoals.helpers.extensions.showSnack
 
 class MainActivity : AppCompatActivity(), HandleSnackMessage/*AdapterView.OnItemSelectedListener*/ {
 //    private lateinit var fabEditGoalBtnMain: ImageView
@@ -34,8 +35,8 @@ class MainActivity : AppCompatActivity(), HandleSnackMessage/*AdapterView.OnItem
             .commitAllowingStateLoss()
     }
 
-    override fun showSnack(message: String) {
-        showSnack(message)
+    override fun showMessage(message: String) {
+        showSnack(text = message)
     }
 
     companion object {

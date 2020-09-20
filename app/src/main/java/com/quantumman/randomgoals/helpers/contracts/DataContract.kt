@@ -7,14 +7,14 @@ object DataContract {
     const val PREF_NAME = BuildConfig.APPLICATION_ID + "_pref"
 
     //DB Config
-    const val DB_VERSION = 1
+    const val DB_VERSION = 2
     const val DB_NAME = BuildConfig.APPLICATION_ID + ".db"
     const val TABLE_PARENT_LIST = "parent_list"
     const val TABLE_GOAL = "goals"
 
     //DAO Queries : Transition
     const val QUERY_GET_ALL_PARENTS_WITH_GOALS = "SELECT * FROM $TABLE_PARENT_LIST ORDER BY parent_date ASC"
-    const val QUERY_GET_PARENT_WITH_GOALS_BY_ID = "SELECT * FROM $TABLE_PARENT_LIST WHERE parent_id = :parentId"
+    const val QUERY_GET_PARENT_WITH_GOALS_BY_NAME = "SELECT * FROM $TABLE_PARENT_LIST WHERE parent_name = :parentName"
 
     //DAO Queries : Parent lists
     const val QUERY_GET_ALL_NAMES_OF_PARENTS = "SELECT parent_name FROM $TABLE_PARENT_LIST"

@@ -26,6 +26,11 @@
     <string name="choose_goal_icon">Choose goal icon</string>
     <string name="mtv_choose_list">Choose list:</string>
     <string name="to_list_goals">To list goals</string>
-    <string name="error_name_exist">Такое имя уже существует...</string>
-    <string name="defult_parent_list_name">Новый список</string>
+    <string name="error_name_already_exist">Такое название уже существует…</string>
+    <string name="default_parent_list_name">Новый список</string>
+    <string name="title_create_parent_list">Создание</string>
+    <string name="title_edit_parent_list">Редактирование</string>
+    <string name="error_input_name_for_parent_list">Введите название списка</string>
+    <string name="error_input_name_goal">Введите название цели</string>
+    <string name="error_no_items">Добавьте ваш список целей</string>
 </resources>

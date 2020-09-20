@@ -5,7 +5,7 @@ import io.reactivex.rxjava3.core.Flowable
 
 interface ParentWithGoalsRepository : ParentListRepository, GoalsRepository {
 
-    fun getParentWithListById(parentId: Long): Flowable<ParentWithListGoals>
+    fun getParentWithListByName(parentName: String): Flowable<ParentWithListGoals>
 
     fun getAllParentsWithListGoals(): Flowable<List<ParentWithListGoals>>
 }

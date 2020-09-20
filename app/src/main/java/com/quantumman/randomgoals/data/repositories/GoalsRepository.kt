@@ -6,7 +6,7 @@ import io.reactivex.rxjava3.core.Maybe
 
 interface GoalsRepository {
 
-    fun insertGoal(goal: GoalItem): Maybe<Long>
+    fun insertGoal(goal: GoalItem): Completable
 
     fun updateGoal(goal: GoalItem): Completable
 

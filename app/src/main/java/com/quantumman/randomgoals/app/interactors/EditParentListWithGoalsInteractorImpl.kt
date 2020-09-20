@@ -6,6 +6,7 @@ import com.quantumman.randomgoals.data.repositories.ParentWithGoalsRepository
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Flowable
 import io.reactivex.rxjava3.core.Maybe
+import io.reactivex.rxjava3.core.Single
 
 class EditParentListWithGoalsInteractorImpl(
     private val parentWithGoalsRepo: ParentWithGoalsRepository
@@ -13,11 +14,15 @@ class EditParentListWithGoalsInteractorImpl(
 
     // MARK -> ParentList
 
-    override fun getParentListWithGoals(parentId: Long): Flowable<ParentWithListGoals> {
-        return parentWithGoalsRepo.getParentWithListById(parentId)
+    override fun insertParentListGoals(parent: ParentWithListGoals): Completable {
+        return parentWithGoalsRepo.insertParentListGoals(parent)
     }
 
-    override fun getAllParentNames(): Flowable<List<String>> {
+    override fun getParentListWithGoals(parentName: String): Flowable<ParentWithListGoals> {
+        return parentWithGoalsRepo.getParentWithListByName(parentName)
+    }
+
+    override fun getAllParentNames(): Maybe<List<String>> {
         return parentWithGoalsRepo.getAllParentNames()
     }
 
@@ -31,7 +36,7 @@ class EditParentListWithGoalsInteractorImpl(
 
     // MARK -> Goals
 
-    override fun insertGoal(goal: GoalItem): Maybe<Long> {
+    override fun insertGoal(goal: GoalItem): Completable {
         return parentWithGoalsRepo.insertGoal(goal)
     }
 

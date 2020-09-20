@@ -3,7 +3,6 @@ package com.quantumman.randomgoals.app.ui.fragments
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
-import com.jakewharton.rxbinding4.view.clicks
 import com.quantumman.randomgoals.R
 import com.quantumman.randomgoals.app.model.GoalItem
 import com.quantumman.randomgoals.app.ui.presenters.RandomScreenPresenter
@@ -33,9 +32,7 @@ class RandomScreenFragment : MvpAppCompatFragment(R.layout.random_screen_fragmen
     }
 
     override fun prepareComponents() {
-        ivNavToAllParentLists.clicks()
-            .doOnNext { println("Click Btn") }
-            .subscribe {
+        ivNavToAllParentLists.setOnClickListener {
                 val fragment = AllParentListsFragment.getInstance()
                 navigate(fragment)
             }

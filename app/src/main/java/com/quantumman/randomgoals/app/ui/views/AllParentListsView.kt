@@ -3,14 +3,14 @@ package com.quantumman.randomgoals.app.ui.views
 import moxy.MvpView
 import moxy.viewstate.strategy.alias.AddToEndSingle
 import moxy.viewstate.strategy.alias.OneExecution
-import moxy.viewstate.strategy.alias.Skip
 
-@AddToEndSingle
+@OneExecution
 interface AllParentListsView : MvpView {
 
-    fun initShowingData()
-    @Skip
+    @AddToEndSingle
+    fun initComponents()
+
     fun showError(message: String)
-    @OneExecution
-    fun deleteParentList()
+    fun showError(message: Int)
+    fun changeStateRecycler(existence: Boolean)
 }
