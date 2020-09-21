@@ -10,17 +10,17 @@ import androidx.recyclerview.widget.RecyclerView
 import com.quantumman.randomgoals.R
 import com.quantumman.randomgoals.app.model.IconsGoals.ICONS_LIST
 import com.quantumman.randomgoals.app.model.ParentWithListGoals
-import kotlinx.android.synthetic.main.item_list_goals.view.*
+import kotlinx.android.synthetic.main.item_parent_list.view.*
 
 class ParentListsRecyclerAdapter
     : ListAdapter<ParentWithListGoals, ParentListsRecyclerAdapter.ParentViewHolder>(
     ParentListsDiffCallback()
 ) {
 
-    var onItemClick: ((ParentWithListGoals, Int) -> Unit)? = null
+    var onItemClick: ((ParentWithListGoals) -> Unit)? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ParentViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_list_goals, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_parent_list, parent, false)
         return ParentViewHolder(view)
     }
 
@@ -40,7 +40,7 @@ class ParentListsRecyclerAdapter
         //handling View type pressed
         init {
             itemView.setOnClickListener {
-                onItemClick?.invoke(getItem(adapterPosition), adapterPosition)
+                onItemClick?.invoke(getItem(adapterPosition))
             }
         }
 

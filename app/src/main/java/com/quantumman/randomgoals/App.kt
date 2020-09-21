@@ -1,9 +1,9 @@
 package com.quantumman.randomgoals
 
 import android.app.Application
-import com.quantumman.randomgoals.di.module.architectModule
-import com.quantumman.randomgoals.di.module.navigateModule
-import com.quantumman.randomgoals.di.module.roomModule
+import com.quantumman.randomgoals.di.modules.architectModule
+import com.quantumman.randomgoals.di.modules.navigateModule
+import com.quantumman.randomgoals.di.modules.roomModule
 import net.danlew.android.joda.JodaTimeAndroid
 import org.koin.android.ext.android.get
 import org.koin.android.ext.koin.androidContext

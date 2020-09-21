@@ -1,10 +1,8 @@
-package com.quantumman.randomgoals.di.module
+package com.quantumman.randomgoals.di.modules
 
 import androidx.room.Room
 import com.quantumman.randomgoals.data.db.AppDatabase
-import com.quantumman.randomgoals.data.db.dao.ParentListsDao
 import com.quantumman.randomgoals.helpers.contracts.DataContract.DB_NAME
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import org.koin.core.module.Module
 import org.koin.dsl.module
 

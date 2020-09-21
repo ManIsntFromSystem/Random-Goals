@@ -5,16 +5,21 @@ import androidx.lifecycle.MutableLiveData
 import com.quantumman.randomgoals.R
 import com.quantumman.randomgoals.app.interactors.ParentWithGoalsInteractor
 import com.quantumman.randomgoals.app.model.ParentWithListGoals
+import com.quantumman.randomgoals.app.ui.fragments.containers.Screens
 import com.quantumman.randomgoals.app.ui.views.AllParentListsView
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.schedulers.Schedulers
 import moxy.InjectViewState
 import moxy.MvpPresenter
+import ru.terrakok.cicerone.Router
 import timber.log.Timber
 
 @InjectViewState
-class AllParentListsPresenter(private val parentWithGoalsInteractor: ParentWithGoalsInteractor) : MvpPresenter<AllParentListsView>() {
+class AllParentListsPresenter(
+    private val router: Router,
+    private val parentWithGoalsInteractor: ParentWithGoalsInteractor
+) : MvpPresenter<AllParentListsView>() {
 
     // For clear disposables
     private val disposableBag = CompositeDisposable()
@@ -33,14 +38,18 @@ class AllParentListsPresenter(private val parentWithGoalsInteractor: ParentWithG
         )
     }
 
-    fun swapParentList(parent: ParentWithListGoals) {
-
+    fun swapParentList(parent: ParentWithListGoals, position: Int) {
+        deleteParentList(parent)
+        Timber.i("Delete pos: $position")
     }
 
     // handling click on recycler and open EditDialog for change Goal's name or delete GoalItem
-    fun handleClickToParentItem(parent: ParentWithListGoals, position: Int) {
-            deleteParentList(parent)
-            Timber.i("Delete pos: $position")
+    fun handleClickToParentItem(parent: ParentWithListGoals) {
+        router.navigateTo(Screens.editParentListsScreen(params = parent.parentName))
+    }
+
+    fun handleClickToAddNewListGoals() {
+        router.navigateTo(Screens.createParentListsScreen())
     }
 
     private fun deleteAllGoals() {

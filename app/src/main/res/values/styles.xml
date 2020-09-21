@@ -1,36 +1,26 @@
 <resources>
 
-    <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.MaterialComponents.Light.DarkActionBar.Bridge">
-        <!-- Customize your theme here. -->
+    <style name="MyMaterialTheme" parent="Theme.MaterialComponents.Light.NoActionBar.Bridge">
+        <!-- Add attributes here -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <item name="colorOnPrimary">@color/white</item>
-        <item name="colorSecondary">@color/colorAccent</item>
-        <item name="colorOnSecondary">@color/white</item>
-        <item name="android:colorBackground">@color/colorPrimary_10</item>
-        <item name="colorSurface">@color/white</item>
-
+        <item name="textAppearanceButton">@style/AppTextAppearance.Button</item>
     </style>
-    <style name="Text">
-
+    <!--To fix rendering in preview -->
+    <style name="AppTextAppearance.Button" parent="TextAppearance.MaterialComponents.Button">
+        <item name="android:textAllCaps">true</item>
     </style>
 
     <style name="Widget.MyTextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
-        <item name="boxBackgroundColor">@color/colorPrimary_10</item>
         <item name="android:textSize">20sp</item>
-        <item name="android:textColor">@color/colorAccent_11</item>
-        <item name="android:textColorHint">@color/colorAccentDark</item>
     </style>
 
     <style name="Widget.MyExtendFABStyle" parent="Widget.MaterialComponents.ExtendedFloatingActionButton">
         <item name="fabSize">normal</item>
-        <item name="backgroundTint">@color/colorAccentDark</item>
         <item name="android:focusable">true</item>
         <item name="android:clickable">true</item>
         <item name="android:textSize">20sp</item>
-        <item name="android:textColor">@color/white</item>
         <item name="android:fontFamily">sans-serif-condensed-medium</item>
     </style>
 

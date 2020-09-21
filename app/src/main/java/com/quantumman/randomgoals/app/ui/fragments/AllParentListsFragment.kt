@@ -11,14 +11,13 @@ import com.quantumman.randomgoals.app.ui.adapters.ParentListsRecyclerAdapter
 import com.quantumman.randomgoals.app.ui.presenters.AllParentListsPresenter
 import com.quantumman.randomgoals.app.ui.views.AllParentListsView
 import com.quantumman.randomgoals.helpers.HandleSnackMessage
-import kotlinx.android.synthetic.main.all_parent_lists_fragment.*
-import kotlinx.android.synthetic.main.edit_parent_list_layout.*
+import kotlinx.android.synthetic.main.all_parent_lists_layout.*
 import moxy.MvpAppCompatFragment
 import moxy.presenter.InjectPresenter
 import moxy.presenter.ProvidePresenter
 import org.koin.android.ext.android.get
 
-class AllParentListsFragment : MvpAppCompatFragment(R.layout.all_parent_lists_fragment), AllParentListsView {
+class AllParentListsFragment : MvpAppCompatFragment(R.layout.all_parent_lists_layout), AllParentListsView {
 
     @InjectPresenter
     lateinit var allParentListsPresenter: AllParentListsPresenter
@@ -51,7 +50,7 @@ class AllParentListsFragment : MvpAppCompatFragment(R.layout.all_parent_lists_fr
         parentRecyclerAdapter.onItemClick = allParentListsPresenter::handleClickToParentItem
 
         fabAddNewParentWithGoals.setOnClickListener {
-            val fragment = EditParentListFragment.getCreateParentInstance()
+            allParentListsPresenter.handleClickToAddNewListGoals()
         }
     }
 

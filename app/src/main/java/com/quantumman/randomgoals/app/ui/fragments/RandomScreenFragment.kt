@@ -8,21 +8,17 @@ import com.quantumman.randomgoals.app.ui.adapters.ListGoalsDropDownAdapter
 import com.quantumman.randomgoals.app.ui.presenters.RandomScreenPresenter
 import com.quantumman.randomgoals.app.ui.views.RandomScreenView
 import com.quantumman.randomgoals.helpers.HandleSnackMessage
-import kotlinx.android.synthetic.main.random_screen_fragment.*
+import kotlinx.android.synthetic.main.random_screen_layout.*
 import moxy.MvpAppCompatFragment
 import moxy.presenter.InjectPresenter
 import moxy.presenter.ProvidePresenter
 import org.koin.android.ext.android.get
 
 
-class RandomScreenFragment : MvpAppCompatFragment(R.layout.random_screen_fragment), RandomScreenView {
+class RandomScreenFragment : MvpAppCompatFragment(R.layout.random_screen_layout), RandomScreenView {
 
     @InjectPresenter lateinit var randomScreenPresenter: RandomScreenPresenter
     @ProvidePresenter fun provide(): RandomScreenPresenter = get()
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -30,14 +26,15 @@ class RandomScreenFragment : MvpAppCompatFragment(R.layout.random_screen_fragmen
     }
 
     override fun prepareComponents() {
-        println("prepareComponents")
         randomScreenPresenter.data.observe(viewLifecycleOwner, { list ->
             if (list != null) autoCompleteDropDown.setAdapter(ListGoalsDropDownAdapter(requireContext(), list))
         })
 
-        ivNavToAllParentLists.setOnClickListener { val fragment = AllParentListsFragment.getInstance() }
+        ivNavToAllParentLists.setOnClickListener {
+            randomScreenPresenter.clickedOnAllParentListsImg()
+        }
 
-        autoCompleteDropDown.setOnItemClickListener { adapterView, view, i, l ->
+        autoCompleteDropDown.setOnItemClickListener { _, _, i, _ ->
             randomScreenPresenter.clickedOnParentListInSpinner(i)
         }
 

@@ -6,12 +6,17 @@ import com.quantumman.randomgoals.R
 import com.quantumman.randomgoals.app.interactors.ParentWithGoalsInteractor
 import com.quantumman.randomgoals.app.model.IconsGoals
 import com.quantumman.randomgoals.app.model.ParentWithListGoals
+import com.quantumman.randomgoals.app.ui.fragments.containers.Screens
 import com.quantumman.randomgoals.app.ui.views.RandomScreenView
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import moxy.MvpPresenter
+import ru.terrakok.cicerone.Router
 import timber.log.Timber
 
-class RandomScreenPresenter(private val parentWithGoalsInteractor: ParentWithGoalsInteractor) : MvpPresenter<RandomScreenView>() {
+class RandomScreenPresenter(
+    private val router: Router,
+    private val parentWithGoalsInteractor: ParentWithGoalsInteractor
+) : MvpPresenter<RandomScreenView>() {
 
     private val disposableBag = CompositeDisposable()
     private var choseParentList: ParentWithListGoals? = null
@@ -53,5 +58,9 @@ class RandomScreenPresenter(private val parentWithGoalsInteractor: ParentWithGoa
                 viewState.showRandomResult(goal, IconsGoals.ICONS_LIST[parent.parentIcon].iconName)
             }
         }
+    }
+
+    fun clickedOnAllParentListsImg() {
+        router.navigateTo(Screens.allParentListsScreen())
     }
 }
