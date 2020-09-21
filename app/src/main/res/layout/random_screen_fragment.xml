@@ -18,33 +18,33 @@
             android:layout_width="match_parent"
             android:layout_height="150dp">
 
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/mtvChooseList"
-                android:layout_width="wrap_content"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/layoutChooseListGoals"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
+                android:hint="@string/hint_choose_goals_list"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="14dp"
                 android:layout_centerVertical="true"
-                android:layout_marginStart="16dp"
-                android:text="@string/mtv_choose_list"
-                android:theme="@style/AppTheme" />
+                android:layout_alignParentStart="true"
+                android:layout_toStartOf="@+id/ivNavToAllParentLists">
 
-            <Spinner
-                android:id="@+id/spinnerListsGoals"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:layout_marginEnd="16dp"
-                android:layout_toStartOf="@+id/ivNavToAllParentLists"
-                android:layout_toEndOf="@+id/mtvChooseList"
-                android:textAlignment="center" />
+                <AutoCompleteTextView
+                    android:id="@+id/autoCompleteDropDown"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:editable="false"
+                    tools:ignore="LabelFor" />
+            </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/ivNavToAllParentLists"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:layout_alignParentEnd="true"
-                android:layout_centerInParent="true"
-                android:layout_marginEnd="32dp"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="22dp"
                 android:src="@drawable/ic_notepad_2"
                 android:clickable="true"
                 android:focusable="true" />
@@ -57,7 +57,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:layout_marginEnd="24dp"
-        app:layout_constraintBottom_toTopOf="@+id/playRandomImgBtn"
+        app:layout_constraintBottom_toTopOf="@+id/fabStartRandomGoal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cardView">
@@ -75,8 +75,8 @@
                 android:layout_alignParentTop="true"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="12dp"
-                android:contentDescription="@string/desc_icon_chosen_goal"
-                android:src="@drawable/ic_purpose" />
+                android:src="@drawable/ic_purpose"
+                tools:ignore="ContentDescription" />
 
             <TextView
                 android:id="@+id/nameChosenGoalTextView"
@@ -94,18 +94,17 @@
             android:id="@+id/startedRandomGoalImg"
             android:layout_width="150dp"
             android:layout_height="150dp"
-            android:contentDescription="@string/desc_started_random_image"
-            android:src="@drawable/ic_brainstorm" />
+            android:src="@drawable/ic_brainstorm"
+            tools:ignore="ContentDescription" />
     </androidx.cardview.widget.CardView>
 
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-        android:id="@+id/playRandomImgBtn"
+        android:id="@+id/fabStartRandomGoal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="32dp"
-        android:text="Get Goal"
+        android:text="@string/text_get_goal"
         style="@style/Widget.MyExtendFABStyle"
-        android:contentDescription="@string/start_random"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>

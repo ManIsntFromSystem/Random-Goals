@@ -166,11 +166,11 @@ class EditParentListPresenter(
             )
     }
 
-
     ///////////////////////*********Clear Disposable Bag**********///////////////////
 
-    fun destroyView() {
+    override fun destroyView(view: EditParentListsView?) {
         data.value?.let { parent -> if (parent.listGoals.isNullOrEmpty()) deleteParentList(parent) }
         disposableBag.clear()
+        super.destroyView(view)
     }
 }

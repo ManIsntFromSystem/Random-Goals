@@ -11,10 +11,11 @@ import com.quantumman.randomgoals.R
 import com.quantumman.randomgoals.app.model.GoalItem
 import com.quantumman.randomgoals.helpers.enums.RecyclerClickType
 import com.quantumman.randomgoals.helpers.extensions.toEditable
-import com.quantumman.randomgoals.utils.GoalItemDiffCallback
 import kotlinx.android.synthetic.main.item_goal_edit.view.*
 
-class GoalItemsAdapter : ListAdapter<GoalItem, GoalItemsAdapter.GoalItemsViewHolder>(GoalItemDiffCallback()) {
+class GoalItemsAdapter : ListAdapter<GoalItem, GoalItemsAdapter.GoalItemsViewHolder>(
+    GoalItemDiffCallback()
+) {
 
     //transferring the call to the fragment | its not best solution, but work pretty good
     var onItemClick: ((GoalItem, Int, RecyclerClickType) -> Unit)? = null

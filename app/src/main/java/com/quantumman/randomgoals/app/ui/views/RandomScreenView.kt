@@ -1,15 +1,13 @@
 package com.quantumman.randomgoals.app.ui.views
 
-import androidx.fragment.app.Fragment
+import com.quantumman.randomgoals.app.model.GoalItem
 import moxy.MvpView
-import moxy.viewstate.strategy.AddToEndSingleStrategy
-import moxy.viewstate.strategy.StateStrategyType
+import moxy.viewstate.strategy.alias.AddToEndSingle
 
-@StateStrategyType(value = AddToEndSingleStrategy::class)
+@AddToEndSingle
 interface RandomScreenView : MvpView {
-    fun showData()
-    fun showRandomResult()
     fun prepareComponents()
     fun showError(message: String)
-    fun navigate(fragment: Fragment)
+    fun showError(message: Int)
+    fun showRandomResult(goal: GoalItem, icon: Int)
 }

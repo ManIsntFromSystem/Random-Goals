@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:ignore="UseCompoundDrawables">
+
+    <ImageView
+        android:id="@+id/ivIconDropDownItem"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        tools:src="@drawable/ic_purpose"
+        tools:ignore="ContentDescription" />
+
+    <TextView
+        android:id="@+id/tvListNameDropDownItem"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        tools:text="@string/hint_item_list_name"
+        android:textAppearance="?attr/textAppearanceSubtitle1"/>
+
+</LinearLayout>

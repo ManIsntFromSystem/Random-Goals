@@ -32,5 +32,9 @@
     <string name="title_edit_parent_list">Редактирование</string>
     <string name="error_input_name_for_parent_list">Введите название списка</string>
     <string name="error_input_name_goal">Введите название цели</string>
-    <string name="error_no_items">Добавьте ваш список целей</string>
+    <string name="error_no_items">Список пуст…</string>
+    <string name="hint_choose_goals_list">Список целей</string>
+    <string name="text_get_goal">Get Goal</string>
+    <string name="error_try_again">Попробуйте еще раз</string>
+    <string name="error_not_choosed_list">Выберите список</string>
 </resources>

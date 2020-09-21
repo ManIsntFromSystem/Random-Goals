@@ -28,7 +28,7 @@ class MainActivity : AppCompatActivity(), HandleSnackMessage/*AdapterView.OnItem
 //        window.requestFeature(Window.FEATURE_CONTENT_TRANSITIONS)
         setContentView(R.layout.activity_main)
 
-        val fragment = EditParentListFragment.getCreateParentInstance()
+        val fragment = RandomScreenFragment.getInstance()
         supportFragmentManager.beginTransaction()
             .disallowAddToBackStack()
             .replace(R.id.container, fragment, TAG)

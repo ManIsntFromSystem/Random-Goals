@@ -2,59 +2,65 @@ package com.quantumman.randomgoals.app.ui.fragments
 
 import android.os.Bundle
 import android.view.View
-import androidx.fragment.app.Fragment
 import com.quantumman.randomgoals.R
 import com.quantumman.randomgoals.app.model.GoalItem
+import com.quantumman.randomgoals.app.ui.adapters.ListGoalsDropDownAdapter
 import com.quantumman.randomgoals.app.ui.presenters.RandomScreenPresenter
 import com.quantumman.randomgoals.app.ui.views.RandomScreenView
+import com.quantumman.randomgoals.helpers.HandleSnackMessage
 import kotlinx.android.synthetic.main.random_screen_fragment.*
 import moxy.MvpAppCompatFragment
 import moxy.presenter.InjectPresenter
 import moxy.presenter.ProvidePresenter
 import org.koin.android.ext.android.get
 
+
 class RandomScreenFragment : MvpAppCompatFragment(R.layout.random_screen_fragment), RandomScreenView {
 
     @InjectPresenter lateinit var randomScreenPresenter: RandomScreenPresenter
-    @ProvidePresenter
-    fun provide(): RandomScreenPresenter = get()
-
-    private var randomGoal: GoalItem? = null
+    @ProvidePresenter fun provide(): RandomScreenPresenter = get()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        randomScreenPresenter.showData()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        randomScreenPresenter.showData()
     }
 
     override fun prepareComponents() {
-        ivNavToAllParentLists.setOnClickListener {
-                val fragment = AllParentListsFragment.getInstance()
-                navigate(fragment)
-            }
+        println("prepareComponents")
+        randomScreenPresenter.data.observe(viewLifecycleOwner, { list ->
+            if (list != null) autoCompleteDropDown.setAdapter(ListGoalsDropDownAdapter(requireContext(), list))
+        })
+
+        ivNavToAllParentLists.setOnClickListener { val fragment = AllParentListsFragment.getInstance() }
+
+        autoCompleteDropDown.setOnItemClickListener { adapterView, view, i, l ->
+            randomScreenPresenter.clickedOnParentListInSpinner(i)
+        }
+
+        fabStartRandomGoal.setOnClickListener {
+            randomScreenPresenter.clickedOnStartRandomGoal()
+        }
     }
 
-    override fun showData() {
-        TODO("Not yet implemented")
+    override fun showRandomResult(goal: GoalItem, icon: Int) {
+        iconChosenGoalImg.setImageResource(icon)
+        nameChosenGoalTextView.text = goal.goalName
+        startedRandomGoalImg.visibility = View.INVISIBLE
+        relativeChosenGoal.visibility = View.VISIBLE
     }
 
-    override fun showRandomResult() {
-        TODO("Not yet implemented")
-    }
+    /////////////////*   Errors   *//////////////////
 
     override fun showError(message: String) {
-        TODO("Not yet implemented")
+        (activity as? HandleSnackMessage)?.showMessage(message = message)
     }
 
-    override fun navigate(fragment: Fragment) {
-        childFragmentManager.beginTransaction()
-            .replace(R.id.container, fragment, TAG)
-            .addToBackStack(TAG)
-            .commit()
+    override fun showError(message: Int) {
+        (activity as? HandleSnackMessage)?.showMessage(message = getString(message))
     }
     
     companion object {

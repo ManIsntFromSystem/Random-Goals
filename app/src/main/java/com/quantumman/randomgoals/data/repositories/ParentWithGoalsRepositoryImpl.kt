@@ -28,14 +28,9 @@ class ParentWithGoalsRepositoryImpl(
             .map { mapToParentWithListGoals(it) }
             .doOnError { Timber.e(it.localizedMessage) }
 
-    override fun getAllParentsWithListGoals(): Flowable<List<ParentWithListGoals>> {
-        return parentWithGoalsListDao.getAllParentsWithList()
-            .flatMap { Flowable.fromIterable(it) }
-            .map { mapToParentWithListGoals(it) }
-            .doOnError { Timber.e(it.localizedMessage) }
-            .buffer(50)
-            .map { it.toList() }
-    }
+    override fun getAllParentsWithListGoals(): Flowable<List<ParentWithListGoals>> =
+        parentWithGoalsListDao.getAllParentsWithList()
+            .concatMap { list -> Flowable.fromArray(list.map { mapToParentWithListGoals(it) }) }
 
     //MARK :  Parents functions
     override fun insertParentListGoals(parent: ParentWithListGoals): Completable =
@@ -61,6 +56,7 @@ class ParentWithGoalsRepositoryImpl(
     override fun deleteAllGoals(parentId: Long): Completable = goalDao.deleteAllGoal(parentId)
 
     // MARK :  Map functions
+
     private fun mapToParentWithListGoals(parentList: ParentWithListGoalsDto): ParentWithListGoals {
         val parent = parentList.parent
         val listGoals = parentList.listGoals.map { goal ->

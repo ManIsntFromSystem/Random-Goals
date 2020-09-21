@@ -64,7 +64,8 @@ class AllParentListsPresenter(private val parentWithGoalsInteractor: ParentWithG
 
     ///////////////////////*********Clear Disposable Bag**********///////////////////
 
-    fun destroyView() {
+    override fun destroyView(view: AllParentListsView?) {
         disposableBag.clear()
+        super.destroyView(view)
     }
 }

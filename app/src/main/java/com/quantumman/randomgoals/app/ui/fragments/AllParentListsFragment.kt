@@ -88,6 +88,11 @@ class AllParentListsFragment : MvpAppCompatFragment(R.layout.all_parent_lists_fr
         (activity as? HandleSnackMessage)?.showMessage(message = getString(message))
     }
 
+    //////////////*     Override Lifecycle methods  *//////////////
+
+
+    ///////////////////////**********///////////////////////////
+
     companion object {
         private val TAG = AllParentListsFragment::class.simpleName
         fun getInstance() = AllParentListsFragment()

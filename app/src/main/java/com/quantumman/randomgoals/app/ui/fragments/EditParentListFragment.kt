@@ -148,11 +148,6 @@ class EditParentListFragment : MvpAppCompatFragment(R.layout.edit_parent_list_la
 
     //////////////*     Override Lifecycle methods  *//////////////
 
-    override fun onDestroy() {
-        editPresenter.destroyView()
-        super.onDestroy()
-    }
-
     //////////////*     Companion  */////////////////
 
     companion object {

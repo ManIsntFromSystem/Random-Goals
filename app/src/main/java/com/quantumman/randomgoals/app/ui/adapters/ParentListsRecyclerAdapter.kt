@@ -8,16 +8,14 @@ import android.widget.TextView
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.quantumman.randomgoals.R
-import com.quantumman.randomgoals.app.model.GoalItem
 import com.quantumman.randomgoals.app.model.IconsGoals.ICONS_LIST
 import com.quantumman.randomgoals.app.model.ParentWithListGoals
-import com.quantumman.randomgoals.helpers.enums.RecyclerClickType
-import com.quantumman.randomgoals.utils.GoalItemDiffCallback
-import com.quantumman.randomgoals.utils.ParentListsDiffCallback
 import kotlinx.android.synthetic.main.item_list_goals.view.*
 
 class ParentListsRecyclerAdapter
-    : ListAdapter<ParentWithListGoals, ParentListsRecyclerAdapter.ParentViewHolder>(ParentListsDiffCallback()) {
+    : ListAdapter<ParentWithListGoals, ParentListsRecyclerAdapter.ParentViewHolder>(
+    ParentListsDiffCallback()
+) {
 
     var onItemClick: ((ParentWithListGoals, Int) -> Unit)? = null
 

@@ -1,4 +1,4 @@
-package com.quantumman.randomgoals.utils
+package com.quantumman.randomgoals.app.ui.adapters
 
 import androidx.recyclerview.widget.DiffUtil
 import com.quantumman.randomgoals.app.model.ParentWithListGoals
