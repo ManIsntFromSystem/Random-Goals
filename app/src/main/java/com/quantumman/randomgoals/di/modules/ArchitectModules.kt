@@ -10,7 +10,7 @@ import com.quantumman.randomgoals.data.repositories.ParentWithGoalsRepositoryImp
 import org.koin.dsl.module
 
 val architectModule = module {
-    factory <ParentWithGoalsRepository> {
+    single <ParentWithGoalsRepository> {
         ParentWithGoalsRepositoryImpl(get(), get(), get())
     }
     factory <ParentWithGoalsInteractor> {
@@ -19,9 +19,9 @@ val architectModule = module {
     factory <EditParentListWithGoalsInteractor> {
         EditParentListWithGoalsInteractorImpl(get())
     }
-    factory { AllParentListsPresenter(get(), get()) }
-    factory { RandomScreenPresenter(get(), get()) }
-    factory { EditParentListPresenter(get()) }
-    factory { MainActivityPresenter(get()) }
-    factory { SplashScreenPresenter(get()) }
+    single { AllParentListsPresenter(get(), get()) }
+    single { RandomScreenPresenter(get(), get()) }
+    single { EditParentListPresenter(get()) }
+    single { MainActivityPresenter(get()) }
+    single { SplashScreenPresenter(get()) }
 }

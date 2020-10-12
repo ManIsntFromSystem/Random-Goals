@@ -1,7 +1,6 @@
 package com.quantumman.randomgoals.utils
 
 import android.content.Context
-import android.util.Log
 import android.view.GestureDetector
 import android.view.GestureDetector.SimpleOnGestureListener
 import android.view.MotionEvent
@@ -10,28 +9,13 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.OnItemTouchListener
 
 
-class RecyclerItemClickListener(context: Context?, recyclerView: RecyclerView,
-    private val mListener: OnItemClickListener?) : OnItemTouchListener {
-
-    interface OnItemClickListener {
-        fun onItemClick(view: View?, position: Int)
-        fun onLongItemClick(view: View?, position: Int)
-    }
+class RecyclerItemClickListener(
+    context: Context?,
+    recyclerView: RecyclerView,
+    private val mListener: OnItemClickListener?
+) : OnItemTouchListener {
 
     private var mGestureDetector: GestureDetector
-
-    override fun onInterceptTouchEvent(view: RecyclerView, e: MotionEvent): Boolean {
-        val childView: View? = view.findChildViewUnder(e.x, e.y)
-        if (childView != null && mListener != null && mGestureDetector.onTouchEvent(e)) {
-            mListener.onItemClick(childView, view.getChildAdapterPosition(childView))
-            return true
-        }
-        return false
-    }
-
-    override fun onTouchEvent(view: RecyclerView, motionEvent: MotionEvent) {}
-
-    override fun onRequestDisallowInterceptTouchEvent(disallowIntercept: Boolean) {}
 
     init {
         mGestureDetector = GestureDetector(context, object : SimpleOnGestureListener() {
@@ -48,6 +32,24 @@ class RecyclerItemClickListener(context: Context?, recyclerView: RecyclerView,
             }
 
         })
+    }
+
+    override fun onInterceptTouchEvent(view: RecyclerView, e: MotionEvent): Boolean {
+        val childView: View? = view.findChildViewUnder(e.x, e.y)
+        if (childView != null && mListener != null && mGestureDetector.onTouchEvent(e)) {
+            mListener.onItemClick(childView, view.getChildAdapterPosition(childView))
+            return true
+        }
+        return false
+    }
+
+    override fun onTouchEvent(view: RecyclerView, motionEvent: MotionEvent) {}
+
+    override fun onRequestDisallowInterceptTouchEvent(disallowIntercept: Boolean) {}
+
+    interface OnItemClickListener {
+        fun onItemClick(view: View?, position: Int)
+        fun onLongItemClick(view: View?, position: Int)
     }
 
 }

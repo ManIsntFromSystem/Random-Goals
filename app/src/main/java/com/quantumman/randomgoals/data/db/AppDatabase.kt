@@ -14,22 +14,4 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun goalDao(): GoalDao
     abstract fun parentListDao(): ParentListsDao
     abstract fun parentWithGoalsListDao(): ParentWithGoalsListDao
-
-//    companion object {
-//        @Volatile
-//        private var INSTANCE: AppDatabase? = null
-//
-//        fun getInstance(context: Context): AppDatabase {
-//            val tempInstance = INSTANCE
-//            if (tempInstance != null) return tempInstance
-//
-//            synchronized(this) {
-//                val instance = Room.databaseBuilder(context.applicationContext, AppDatabase::class.java, DB_NAME)
-//                    .fallbackToDestructiveMigration()
-//                    .build()
-//                INSTANCE = instance
-//                return instance
-//            }
-//        }
-//    }
 }

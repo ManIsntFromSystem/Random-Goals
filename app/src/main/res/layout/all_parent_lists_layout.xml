@@ -12,6 +12,15 @@
         android:layout_height="match_parent"
         android:layout_margin="4dp"/>
 
+    <ImageView
+        android:id="@+id/ivHolderParentLists"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="invisible"
+        android:layout_centerInParent="true"
+        android:src="@drawable/ic_launcher_background"
+        tools:ignore="ContentDescription" />
+
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fabAddNewParentWithGoals"
         android:layout_width="wrap_content"

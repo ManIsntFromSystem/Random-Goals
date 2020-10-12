@@ -2,15 +2,14 @@ package com.quantumman.randomgoals.app.ui.fragments
 
 import android.os.Bundle
 import android.view.View
-import androidx.recyclerview.widget.DefaultItemAnimator
-import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.quantumman.randomgoals.R
 import com.quantumman.randomgoals.app.ui.adapters.ParentListsRecyclerAdapter
 import com.quantumman.randomgoals.app.ui.presenters.AllParentListsPresenter
 import com.quantumman.randomgoals.app.ui.views.AllParentListsView
 import com.quantumman.randomgoals.helpers.HandleSnackMessage
+import com.quantumman.randomgoals.utils.SwipeItemHelper
+import com.quantumman.randomgoals.utils.SwipeListener
 import kotlinx.android.synthetic.main.all_parent_lists_layout.*
 import moxy.MvpAppCompatFragment
 import moxy.presenter.InjectPresenter
@@ -19,16 +18,12 @@ import org.koin.android.ext.android.get
 
 class AllParentListsFragment : MvpAppCompatFragment(R.layout.all_parent_lists_layout), AllParentListsView {
 
-    @InjectPresenter
-    lateinit var allParentListsPresenter: AllParentListsPresenter
-    @ProvidePresenter
-    fun provide(): AllParentListsPresenter = get()
+    @InjectPresenter lateinit var allParentListsPresenter: AllParentListsPresenter
+    @ProvidePresenter fun provide(): AllParentListsPresenter = get()
 
-    private lateinit var parentRecyclerAdapter: ParentListsRecyclerAdapter
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        parentRecyclerAdapter = ParentListsRecyclerAdapter()
+    private val parentRecyclerAdapter = ParentListsRecyclerAdapter()
+    private val swipeItemHelper: SwipeItemHelper by lazy {
+        SwipeItemHelper(requireContext(), SwipeListener(parentRecyclerAdapter))
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -37,15 +32,9 @@ class AllParentListsFragment : MvpAppCompatFragment(R.layout.all_parent_lists_la
     }
 
     override fun initComponents() {
-        recyclerViewParentLists.apply {
-            layoutManager = LinearLayoutManager(activity)
-            itemAnimator = DefaultItemAnimator()
-            adapter = parentRecyclerAdapter
-        }
         allParentListsPresenter.data.observe(viewLifecycleOwner, {
             parentRecyclerAdapter.submitList(it)
         })
-
         //transferring the call to the presenter for handling
         parentRecyclerAdapter.onItemClick = allParentListsPresenter::handleClickToParentItem
 
@@ -55,29 +44,12 @@ class AllParentListsFragment : MvpAppCompatFragment(R.layout.all_parent_lists_la
     }
 
     override fun changeStateRecycler(existence: Boolean) = if (existence) {
-//        ivHolderGoals.visibility = View.INVISIBLE
-//        recyclerViewEditGoals.visibility = View.VISIBLE
+        ivHolderParentLists.visibility = View.INVISIBLE
+        recyclerViewParentLists.visibility = View.VISIBLE
     } else {
-//        ivHolderGoals.visibility = View.VISIBLE
-//        recyclerViewEditGoals.visibility = View.INVISIBLE
+        ivHolderParentLists.visibility = View.VISIBLE
+        recyclerViewParentLists.visibility = View.INVISIBLE
     }
-
-    private var itemTouchHelperCallback: ItemTouchHelper.SimpleCallback =
-        object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
-            override fun onMove(
-                recyclerView: RecyclerView,
-                viewHolder: RecyclerView.ViewHolder,
-                target: RecyclerView.ViewHolder
-            ): Boolean {
-                return false
-            }
-
-            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-
-            }
-        }
-
-    /////////////////*   Errors   *//////////////////
 
     override fun showError(message: String) {
         (activity as? HandleSnackMessage)?.showMessage(message = message)
@@ -87,10 +59,21 @@ class AllParentListsFragment : MvpAppCompatFragment(R.layout.all_parent_lists_la
         (activity as? HandleSnackMessage)?.showMessage(message = getString(message))
     }
 
-    //////////////*     Override Lifecycle methods  *//////////////
+    override fun onStart() {
+        super.onStart()
+        swipeItemHelper.attachToRecyclerView(
+            recyclerViewParentLists.apply {
+                layoutManager = LinearLayoutManager(activity)
+                adapter = parentRecyclerAdapter
+            }
+        )
+    }
 
-
-    ///////////////////////**********///////////////////////////
+    override fun onStop() {
+        swipeItemHelper.detachToRecyclerView()
+        recyclerViewParentLists.adapter = null
+        super.onStop()
+    }
 
     companion object {
         private val TAG = AllParentListsFragment::class.simpleName

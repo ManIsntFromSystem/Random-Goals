@@ -20,12 +20,10 @@ class MainActivity : MvpAppCompatActivity(R.layout.activity_main), HandleSnackMe
     @ProvidePresenter fun provide(): MainActivityPresenter = get()
 
     private var navigatorHolder: NavigatorHolder = get()
-    private var stackCount = 0
 
     private val navigator by lazy {
         CustomNavigator(this, R.id.container) { count ->
-            stackCount += count
-            Timber.i("stackCount : $stackCount")
+            Timber.i("stackCount : $count")
         }
     }
 
@@ -36,6 +34,7 @@ class MainActivity : MvpAppCompatActivity(R.layout.activity_main), HandleSnackMe
 
     override fun onBackPressed() {
         mainPresenter.handleOnBackPressed()
+
     }
 
     override fun onPause() {

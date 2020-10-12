@@ -28,8 +28,7 @@ class App : Application() {
     }
 
     private fun initLibraries() {
-        val tree = Timber.DebugTree()
-        Timber.plant(tree)
+        Timber.plant(Timber.DebugTree())
         JodaTimeAndroid.init(get())
     }
 }
